@@ -67,6 +67,7 @@ def build():
             spotlight_items=[i for i in items if site["spotlight"] and site["spotlight"]["topic"] in i["topics"]],
             pubs=[i for i in items if i["type"] == "academic" and i["format"] == "Journal article"][:5],
         )),
+        "contact/index.html": ("contact.html", {}),
         "work/index.html": ("work.html", dict(
             years=sorted({i["date"][:4] for i in items if i["date"]}, reverse=True),
         )),

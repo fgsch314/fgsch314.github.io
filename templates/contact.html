@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Contact · {{ site.short_name }}{% endblock %}
+{% block main %}
+<section class="wrap section">
+  <p class="kicker">Contact</p>
+  <h1 class="display display-sm">Get in touch</h1>
+  <p class="lede">For media requests, advisory work, workshops and research collaboration, write to me by email or connect on LinkedIn.</p>
+  <div class="contact-grid">
+    <div>
+      <div class="address">
+        <span class="address-text">{{ site.email }}</span>
+        <button class="copy-btn" type="button" data-copy="{{ site.email }}">Copy address</button>
+      </div>
+      <div class="actions">
+        <a class="btn" href="{{ site.linkedin }}">LinkedIn</a>
+        <a class="btn" href="{{ site.cv }}">CV (PDF)</a>
+      </div>
+    </div>
+    <div>
+      <h2 class="section-title">What I can help with</h2>
+      <ul class="offers">
+        <li><strong>Media commentary</strong><span>Interviews and background on Gulf economies, oil and gas markets, and the economic fallout of the war on Iran.</span></li>
+        <li><strong>Policy analysis and briefings</strong><span>Diversification strategy, labour markets, industrial policy, sovereign wealth and the energy transition.</span></li>
+        <li><strong>Research collaboration</strong><span>Joint projects, peer review and research advisory roles: econometrics, causal inference, experimental methods.</span></li>
+        <li><strong>Executive education</strong><span>Workshops on the GCC economies, economic policy analysis and strategic decision-making. English, French and German.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script>
+document.querySelectorAll('.copy-btn').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var t = b.dataset.copy, label = b.textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(
+      function () { b.textContent = 'Copied'; },
+      function () { b.textContent = 'Select the address to copy'; });
+    setTimeout(function () { b.textContent = label; }, 2000);
+  });
+});
+</script>{% endblock %}

@@ -21,7 +21,7 @@
       <a href="/#charts">Data</a>
       <a href="/work/?type=media">Media</a>
       <a href="/#about">About</a>
-      <a class="nav-cta" href="mailto:{{ site.email }}">Contact</a>
+      <a class="nav-cta" href="/contact/" {% if page.startswith('contact') %}aria-current="page"{% endif %}>Contact</a>
     </nav>
   </div>
 </header>
@@ -35,7 +35,7 @@
       <p class="muted">{{ site.role }}</p>
     </div>
     <div class="footer-links">
-      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <a href="/contact/">Contact</a>
       <a href="{{ site.linkedin }}">LinkedIn</a>
       <a href="{{ site.cv }}">CV (PDF)</a>
     </div>
