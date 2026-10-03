@@ -1,5 +1,6 @@
-// Form validation, kept free of Workers-only imports so it can be tested with plain Node.
-import { oneLine } from "./mime.js";
+// Form validation, kept free of Workers-only APIs so it can be tested with plain Node.
+// oneLine() strips CR/LF so visitor input can never inject extra headers.
+export const oneLine = (s) => String(s ?? "").replace(/[\r\n]+/g, " ").trim();
 
 const TOPICS = ["Media request", "Advisory", "Workshops & speaking", "Research collaboration", "Other"];
 const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/;

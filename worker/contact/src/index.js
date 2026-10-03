@@ -1,8 +1,8 @@
 // Contact-form endpoint: validates the form, checks Cloudflare Turnstile, and emails the
-// message to the site owner's verified address via Email Routing (send_email binding).
-// Email Routing runs on a subdomain only (FROM_ADDRESS), so the apex MX stays with Proton (D-005).
-import { EmailMessage } from "cloudflare:email";
-import { buildMessage } from "./mime.js";
+// message to the site owner via the Resend API (Reply-To = the visitor).
+// Resend is verified on the subdomain forms.fredericgschneider.com only, so the apex MX
+// records stay with Proton (D-005, D-006). Cloudflare Email Routing was rejected: it can only
+// be onboarded for the whole zone, which would replace the apex MX records.
 import { validate } from "./validate.js";
 
 async function turnstileOk(token, secret, ip) {
@@ -54,19 +54,19 @@ export default {
       `Sent from the contact form on ${origin}. Reply to this email to answer ${data.name} directly.`,
     ].filter((l) => l !== null).join("\n");
 
-    const raw = buildMessage({
-      from: env.FROM_ADDRESS,
-      fromName: `${data.name} via website`,
-      to: env.TO_ADDRESS,
-      replyTo: data.email,
-      subject: `[Website] ${data.topic}: ${data.name}`,
-      text,
-      domain: env.FROM_ADDRESS.split("@")[1],
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: `${data.name.replace(/[<>"\\]/g, "")} via website <${env.FROM_ADDRESS}>`,
+        to: [env.TO_ADDRESS],
+        reply_to: data.email,
+        subject: `[Website] ${data.topic}: ${data.name}`,
+        text,
+      }),
     });
-    try {
-      await env.MAILER.send(new EmailMessage(env.FROM_ADDRESS, env.TO_ADDRESS, raw));
-    } catch (e) {
-      console.error("send failed", e && e.message);
+    if (!r.ok) {
+      console.error("resend failed", r.status, await r.text());
       return json({ ok: false, error: "Sorry, the message could not be sent. Please try again later." }, 502);
     }
     return json({ ok: true });
