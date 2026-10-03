@@ -20,12 +20,6 @@ linkedin: https://www.linkedin.com/in/fredericgschneider/
 cv: /static/files/cv-frederic-schneider.pdf
 portrait: /static/img/portrait.jpg
 
-# Contact form (worker/contact/). The form appears only once both values are set; until then
-# the Contact page shows the copy-address block alone.
-contact_form:
-  endpoint: null          # Worker URL, e.g. https://contact-form.<account>.workers.dev
-  turnstile_sitekey: null # public site key from Cloudflare Turnstile
-
 # Outlets shown in the "As seen in" strip (in this order).
 press: [New York Times, Washington Post, BBC, CNN, Al Jazeera, Bloomberg TV, DW, Euronews, The National]
 

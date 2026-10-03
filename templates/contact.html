@@ -4,32 +4,13 @@
 <section class="wrap section">
   <p class="kicker">Contact</p>
   <h1 class="display display-sm">Get in touch</h1>
-  <p class="lede">For media requests, advisory work, workshops and research collaboration, send me a message here or connect on LinkedIn.</p>
+  <p class="lede">For media requests, advisory work, workshops and research collaboration, write to me by email or connect on LinkedIn.</p>
   <div class="contact-grid">
     <div>
-      {% set cf = site.contact_form %}
-      {% if cf and cf.endpoint and cf.turnstile_sitekey %}
-      <form class="cform" action="{{ cf.endpoint }}" method="post" novalidate>
-        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required maxlength="120"><p class="ferr" data-for="name"></p></div>
-        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required maxlength="200"><p class="ferr" data-for="email"></p></div>
-        <div class="field"><label for="f-org">Organisation <span class="opt">(optional)</span></label><input id="f-org" name="organisation" autocomplete="organization" maxlength="160"></div>
-        <div class="field"><label for="f-topic">Topic</label>
-          <select id="f-topic" name="topic">
-            <option>Media request</option><option>Advisory</option><option>Workshops &amp; speaking</option><option>Research collaboration</option><option>Other</option>
-          </select></div>
-        <div class="field"><label for="f-msg">Message</label><textarea id="f-msg" name="message" rows="7" required maxlength="5000"></textarea><p class="ferr" data-for="message"></p></div>
-        <div class="hp" aria-hidden="true"><label for="f-web">Leave empty</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
-        <div class="cf-turnstile" data-sitekey="{{ cf.turnstile_sitekey }}" data-theme="auto"></div>
-        <button class="btn btn-primary" type="submit">Send message</button>
-        <p class="fstatus" role="status" aria-live="polite"></p>
-      </form>
-      <p class="muted small alt-contact">Prefer email? <span class="address-inline">{{ site.email }}</span> <button class="copy-btn copy-sm" type="button" data-copy="{{ site.email }}">Copy</button></p>
-      {% else %}
       <div class="address">
         <span class="address-text">{{ site.email }}</span>
         <button class="copy-btn" type="button" data-copy="{{ site.email }}">Copy address</button>
       </div>
-      {% endif %}
       <div class="actions">
         <a class="btn" href="{{ site.linkedin }}">LinkedIn</a>
         <a class="btn" href="{{ site.cv }}">CV (PDF)</a>
@@ -47,7 +28,7 @@
   </div>
 </section>
 {% endblock %}
-{% block scripts %}{% if site.contact_form and site.contact_form.endpoint and site.contact_form.turnstile_sitekey %}<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script><script src="/static/contact.js"></script>{% endif %}<script>
+{% block scripts %}<script>
 document.querySelectorAll('.copy-btn').forEach(function (b) {
   b.addEventListener('click', function () {
     var t = b.dataset.copy, label = b.textContent;
