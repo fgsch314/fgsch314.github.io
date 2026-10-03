@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCC: Economic Consequences of the War on Iran — v5</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+:root{--bg:#05091a;--surf:#0d1530;--surf2:#1a2545;--bord:#2a3a60;--txt:#e2e8f0;--muted:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+#hdr{padding:10px 18px;background:var(--surf);border-bottom:1px solid var(--bord);display:flex;align-items:center;gap:18px;flex-shrink:0;flex-wrap:wrap;}
+#hdr h1{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;white-space:nowrap;}
+#hdr .auth{font-size:10px;color:var(--muted);white-space:nowrap;}
+#legend{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.li{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--muted);}
+.ll{display:flex;align-items:center;gap:3px;}
+.lline{height:1.5px;width:22px;}
+.lline.neg{background:#ef4444;}.lline.pos{background:#22c55e;}
+.lline.pot{background:none;border-top:2px dashed #ef4444;width:22px;}
+.lline.back{background:none;border-top:2px dashed #06b6d4;width:22px;}
+.larr{width:0;height:0;border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;}
+.larr.neg{border-left:6px solid #ef4444;}.larr.pos{border-left:6px solid #22c55e;}
+.larr.pot{border-left:6px solid #ef4444;opacity:0.6;}
+.larr.back{border-left:6px solid #06b6d4;}
+#toolbar{margin-left:auto;display:flex;gap:7px;align-items:center;}
+.eb{background:var(--surf2);border:1px solid var(--bord);color:var(--txt);padding:4px 9px;border-radius:5px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:background .15s;}
+.eb:hover{background:#243560;}
+#chart{flex:1;position:relative;overflow:hidden;}
+#chart svg{width:100%;height:100%;cursor:grab;}
+#chart svg:active{cursor:grabbing;}
+#tt{position:absolute;background:rgba(5,9,26,0.97);border:1px solid var(--bord);border-radius:8px;padding:10px 13px;max-width:270px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100;}
+#tt.show{opacity:1;}
+#tt .ti{font-size:9.5px;color:#7dd3fc;font-weight:600;letter-spacing:.06em;margin-bottom:3px;}
+#tt .tl{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:#e2e8f0;margin-bottom:5px;line-height:1.3;}
+#tt .td{font-size:11px;color:#94a3b8;line-height:1.55;}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <div>
+    <h1>GCC: Economic Consequences of the War on Iran — v5</h1>
+    <div class="auth">Frédéric Schneider · ME Council on Global Affairs · March 2026</div>
+  </div>
+  <div id="legend">
+    <div class="li"><div class="ll"><div class="lline neg"></div><div class="larr neg"></div></div>Negative</div>
+    <div class="li"><div class="ll"><div class="lline pos"></div><div class="larr pos"></div></div>Positive / moderating</div>
+    <div class="li"><div class="ll"><div class="lline pot"></div><div class="larr pot"></div></div>Potential</div>
+    <div class="li"><div class="ll"><div class="lline back"></div><div class="larr back"></div></div>Feedback loop</div>
+  </div>
+  <div id="toolbar">
+    <div style="font-size:10px;color:var(--muted);">Scroll to zoom · Drag to pan · Hover nodes</div>
+    <button class="eb" id="zi">＋</button>
+    <button class="eb" id="zo">－</button>
+    <button class="eb" id="zr">⊡ Fit</button>
+  </div>
+</div>
+<div id="chart"><svg id="graph"></svg></div>
+<div id="tt"></div>
+
+<script>
+// ================================================================
+// GCC FLOW DIAGRAM — v5 catalogue
+// Frédéric Schneider / ME Council on Global Affairs / March 2026
+// SVG coordinate space: 3400 × 2100
+// Layers (y): L0=75  L1=285  L2=495  L3=705  L4=915
+//              L5=1125  L6=1335  L7=1545  L8=1755  L9=1960
+// ================================================================
+
+const NODES_DEF = [
+
+  // ── L0 ROOT
+  { id:'ROOT', x:1700, y:75, r:34, dom:'conflict', lbl:'War on\nIran',
+    desc:'U.S.-Israeli campaign (Operations Epic Fury & Roaring Lion) launched 28 Feb 2026. Iran retaliated against all six GCC states simultaneously — unprecedented. Aramco CEO Amin Nasser warned of "catastrophic consequences": a severe chain reaction across shipping, aviation, agriculture and industry.' },
+
+  // ── L1 PRIMARY SHOCKS (y=285)
+  { id:'GS1', x:340,  y:285, r:26, dom:'shock', lbl:'Strait of\nHormuz Closure',
+    desc:'Effectively closed from ~2 March. ~500 ships anchored in open Gulf waters; insurers cancelled war-risk coverage. ~20% of global oil, ~20% of LNG, ~16% of global fertiliser and ~40% of non-HC goods transits the Strait. Estimated cost to global economy: $3–5bn per day.' },
+  { id:'GS2', x:940,  y:285, r:24, dom:'shock', lbl:'Airspace &\nAirport Closures',
+    desc:'All six GCC airspaces closed simultaneously — unprecedented. Dubai Int\'l suspended; Abu Dhabi suffered a fatal incident; Kuwait terminal drone-damaged; Qatar suspended all air navigation. 19,000–40,000 flights cancelled. No GCC hub can substitute for another.' },
+  { id:'GS3', x:1700, y:285, r:26, dom:'shock', lbl:'Infrastructure\nStrikes',
+    desc:'Iranian drones and missiles struck across all six GCC states: Ras Tanura, Ras Laffan, Ruwais, Fujairah, Jebel Ali, DIFC (twice), Burj Al Arab, AWS data centres (UAE and Bahrain), Bahrain desalination plant, Fifth Fleet HQ, Manama residential towers. UAE intercepted 1,500+ drones and 300+ missiles by 13 March.' },
+  { id:'GS5', x:2480, y:285, r:22, dom:'shock', lbl:'Operational\nDefence\nCosts Surge',
+    desc:'Iranian attack drones cost $20,000–$50,000 each; interceptors cost $4.19 million each — a ~100:1 cost asymmetry. GCC interceptor stockpiles rapidly depleted at enormous ongoing fiscal cost, driving an emergency defence spending surge.' },
+  { id:'GS6', x:3100, y:285, r:22, dom:'shock', lbl:'US Security\nGuarantee\nUndermined',
+    desc:'GCC received no advance warning. US pre-removed troops from Al Udeid before Iran\'s strike, leaving Qatar exposed. US bases attracted Iranian strikes rather than deterring them. GCC leaders publicly questioned Washington\'s judgment. Feeds long-term security diversification.' },
+
+  // ── L2 DIRECT PHYSICAL IMPACTS (y=495)
+  { id:'GE4',     x:120,  y:495, r:19, dom:'energy',   lbl:'Storage\nFills',
+    desc:'Hormuz closure causes Gulf oil/gas storage to fill rapidly. Producers forced to cut output even with intact infrastructure — a self-reinforcing supply shock. Storage-driven cuts compound pipeline restrictions.' },
+  { id:'GM3',     x:340,  y:495, r:18, dom:'logistics', lbl:'Red Sea\nBypass\nDisrupted',
+    desc:'Hormuz closure makes the Saudi Petroline→Yanbu Red Sea route critical — but this reactivates the Houthi threat at Bab el-Mandeb. Yemen\'s Houthis have restarted threats. Both Bab el-Mandeb AND Hormuz under simultaneous threat would be unprecedented.' },
+  { id:'BYPASSES',x:570,  y:495, r:20, dom:'energy',   lbl:'Gulf Pipeline\nBypasses',
+    desc:'Saudi Petroline (7 mbpd, Abqaiq→Yanbu) and UAE Abu Dhabi–Fujairah pipeline: partial Hormuz workarounds for oil/gas only. Yanbu exports only ~4.5 mbpd; routes are targetable; neither covers the ~40% non-oil share of Hormuz traffic.' },
+  { id:'IEARES',  x:790,  y:495, r:18, dom:'energy',   lbl:'IEA Strategic\nReserves\nRelease',
+    desc:'IEA coordinated the largest emergency strategic reserve release in history (400m+ barrels). Moderates global oil prices — but lower oil prices harm GCC revenues at the exact moment producers cannot export. Depletes reserves that take years to rebuild.' },
+  { id:'GL1',     x:1030, y:495, r:21, dom:'logistics', lbl:'Logistics\nHubs Struck',
+    desc:'Iranian drone strike on Jebel Ali (world\'s 9th busiest port, ~70% of UAE seaborne trade) and other port/airport facilities. DP World temporarily suspended. Hapag-Lloyd, MSC, Maersk, CMA CGM all suspended Hormuz transits.' },
+  { id:'HCIS',    x:1260, y:495, r:21, dom:'energy',   lbl:'Oil/gas Infra\nDestroyed',
+    desc:'Physical destruction of oil/gas production, refining, and export infrastructure: Ras Tanura, Ras Laffan and Mesaieed (Qatar), Ruwais refinery (UAE), Fujairah oil terminal. Requires reconstruction — not just a safety halt. Degrades pipeline bypasses.' },
+  { id:'EPOW',    x:1490, y:495, r:18, dom:'infra',    lbl:'Power Plants\n& Grid Struck',
+    desc:'Iranian strikes damaged power generation facilities. Power outages are a force-multiplier: desalination plants, data centres, and logistics hubs all require continuous electricity. Loss of grid stability cascades across every sector without direct hits on those assets.' },
+  { id:'URB',     x:1700, y:495, r:20, dom:'infra',    lbl:'Urban Targets\nStruck',
+    desc:'Iranian strikes on civilian and commercial targets: Burj Al Arab hotel (Dubai), US Consulate Dubai, US diplomatic missions in Riyadh and Kuwait, Manama residential towers, Palm Jumeirah. Accelerated HNWI and expatriate departures through viral explosion footage.' },
+  { id:'TRIS',    x:1920, y:495, r:17, dom:'infra',    lbl:'Transport\nInfra Struck',
+    desc:'Potential Iranian strikes on transport infrastructure beyond ports and airports. King Fahd Causeway (Bahrain\'s only land connection with the airport closed) at risk — a "doomsday scenario" completing the economic isolation of 1.6m people.' },
+  { id:'GW1',     x:2130, y:495, r:18, dom:'water',    lbl:'Desalination\nInfra Struck',
+    desc:'Bahrain\'s main desalination plant damaged by drone (9 March). Gulf states produce ~40% of world\'s desalinated water; GCC populations 70–90% dependent. ~400 plants along the contested coastline. Power outages can halt plants even without direct hits.' },
+  { id:'GD1',     x:2340, y:495, r:19, dom:'tech',     lbl:'IT Infra\nStruck',
+    desc:'AWS data centres in UAE and Bahrain hit by drone shrapnel — first time major cloud data centres were damaged in wartime. Delivery services suspended. AWS, Microsoft, and Google all have major Gulf hyperscaler facilities.' },
+  { id:'GD3',     x:2530, y:495, r:16, dom:'tech',     lbl:'Communications\nInfra Struck',
+    desc:'Potential disruption to submarine communications cables through the Gulf, impairing internet and financial data flows across Asia-Europe routes. Iran has the capability to target these assets. Would compound data centre outages.' },
+  { id:'GF0',     x:2720, y:495, r:22, dom:'finance',  lbl:'Financial\nCentres\nStruck',
+    desc:'DIFC struck twice in 24 hours (12–13 March). Iran targeted "banks and economic centres." ICD Brookfield Place — Goldman Sachs, JPMorgan, BlackRock, BNP Paribas, EY — evacuated. Citi, Deloitte, PwC moved to WFH. HSBC closed all Qatar branches.' },
+  { id:'GK4',     x:2980, y:495, r:18, dom:'defence',  lbl:'US Umbrella\nRethink',
+    desc:'GCC states must weigh whether US forces are a net security asset or a liability attracting Iranian targeting. Long-term security diversification toward China, France, or multilateral frameworks accelerates. GCC must compensate for reduced US protection.' },
+
+  // ── L3 FIRST-ORDER CONSEQUENCES (y=705)
+  { id:'GE2',  x:170,  y:705, r:22, dom:'energy',   lbl:'Oil/gas\nProduction\nHalted',
+    desc:'QatarEnergy declared force majeure at Ras Laffan and Mesaieed — first full shutdown in ~30 years. Ruwais shut after drone fire. Bahrain\'s Bapco and Sitra refinery halted. ALBA (world\'s largest aluminium smelter outside China) suspended exports.' },
+  { id:'GE3',  x:460,  y:705, r:19, dom:'energy',   lbl:'Oil/gas\nRestart\nDifficulties',
+    desc:'Restarting complex oil/gas infrastructure takes weeks to months. Aluminium smelters once cold take up to six months to restart (ALBA / Qatar precedent, Economist 12 March 2026). Revenue gap extends well beyond any ceasefire.' },
+  { id:'GL3',  x:730,  y:705, r:18, dom:'logistics', lbl:'Oman Bypass\nDisrupted',
+    desc:'Duqm and Salalah (Oman) struck by Iranian missiles. Sohar included in London insurance market high-risk zone. Iran\'s strike geography encompasses all bypass routes — the supposed workaround is not safe.' },
+  { id:'GW3',  x:980,  y:705, r:20, dom:'water',    lbl:'Water Supply\nEmergency',
+    desc:'Qatar assessed it could run out of potable water within 3 days — prompting pre-war construction of 15 emergency reservoirs. Gulf states carry only weeks of water storage. Water cannot be rationed politically without immediate social breakdown.' },
+  { id:'GS4',  x:1430, y:705, r:24, dom:'shock',    lbl:'Confidence &\nReputation\nShock',
+    desc:'Iran\'s willingness to strike civilian targets shatters the "Gulf as safe haven" narrative. Explosion footage from Dubai\'s Palm Jumeirah and Doha luxury hotels goes viral globally. JPMorgan: non-oil growth cut 1.2pp GCC-wide, 2.3pp for UAE. Oxford Economics: −1.8pp to 2.6% for 2026.' },
+  { id:'GA1',  x:1800, y:705, r:22, dom:'aviation', lbl:'Gulf Airlines\nGrounded',
+    desc:'Emirates and Qatar Airways — two of the world\'s most profitable airlines, pillars of national diversification — grounded on every day of closure. International carriers (BA, Lufthansa, Air India, Cathay) also suspended services. No GCC hub can substitute.' },
+  { id:'GA4',  x:2060, y:705, r:18, dom:'aviation', lbl:'Rerouting &\nRepatriation\nFlights',
+    desc:'Airlines fly costly empty legs to repatriate tourists and expatriates. Global airlines cannot overfly Gulf/Iranian airspace, adding hours to routes worldwide. Charter demand far exceeds supply.' },
+  { id:'GK1',  x:2430, y:705, r:22, dom:'defence',  lbl:'Defence\nSpending\nSurge',
+    desc:'Governments restock depleted interceptor missiles. Saudi Arabia had the world\'s 5th-largest defence budget ($80.3bn in 2024); further sharp increases expected. The drone/interceptor cost asymmetry makes restocking astronomically expensive.' },
+  { id:'GD2',  x:2750, y:705, r:18, dom:'tech',     lbl:'Digital Hub\nAmbitions\nThreatened',
+    desc:'Attacks on hyperscaler facilities impair the cloud/AI infrastructure narrative underpinning UAE and Saudi Vision goals. Data centre operators apply war-risk premiums to Gulf expansion plans.' },
+  { id:'GH1',  x:3100, y:705, r:21, dom:'human',    lbl:'HNWI &\nExpatriates\nRelocate',
+    desc:'Dubai home to 237 centimillionaires and 20+ billionaires; DIFC manages $1.2 trillion in family office wealth. Private jet demand far exceeds supply. "Cannot function if everyone with a foreign passport flees." Some departures will be permanent.' },
+
+  // ── L4 SUPPLY / MARKET DISRUPTION (y=915)
+  { id:'GHCS',  x:170,  y:915, r:23, dom:'energy',   lbl:'Gulf Oil/gas\nSupply\nDisrupted',
+    desc:'Aggregate disruption to Gulf oil/gas supply: Hormuz closure, storage fills, production halts, restart difficulties, infra damage, bypass limitations. The central node through which supply disruption flows into price shock and long-term derisking.' },
+  { id:'GE5',   x:450,  y:915, r:18, dom:'energy',   lbl:'Oil/gas\nExpansion\nDelayed',
+    desc:'QatarEnergy pushing back the 33 mtpa North Field East expansion (four-train) to 2027+. Removes a major new LNG supply tranche at the exact moment global buyers anticipated price relief — a long-term blow to Qatar\'s position as the world\'s largest LNG exporter.' },
+  { id:'NHCL',  x:720,  y:915, r:20, dom:'logistics', lbl:'Non-HC\nLogistics\nBlocked',
+    desc:'~40% of Hormuz traffic is non-hydrocarbon: consumer goods, food, vehicles, construction materials. The Strait closure is a comprehensive trade disruption — not just an energy crisis. Cannot be rerouted via the oil pipelines.' },
+  { id:'GL4',   x:990,  y:915, r:20, dom:'food',     lbl:'Food Import\nCrisis',
+    desc:'GCC is import-dependent by sea: ~90% of Qatar\'s food arrives this way. Perishables risk shortage within 20 days. Iran was a direct food supplier ($7.6bn to GCC, 2024–25), now cut off. War-risk surcharges: $1,500–3,000+/container. Food CPI up ~2pp.' },
+  { id:'GL2',   x:1270, y:915, r:19, dom:'logistics', lbl:'Transshipment\nHub Model\nThreatened',
+    desc:'Global logistics planners beginning to reroute supply chains away from Gulf hubs, potentially permanently redirecting to Colombo, Singapore, or Salalah. Jebel Ali\'s status depends entirely on the stability perception the war has shattered.' },
+  { id:'GA2',   x:1560, y:915, r:22, dom:'aviation', lbl:'Tourism\nCollapse\n($40bn)',
+    desc:'All GCC states shut simultaneously during Ramadan — normally peak season. Losses: $40bn (ME Council). Oxford Economics: 11–27% visitor drop, $34–56bn spending loss for 2026. Saudi Arabia\'s 5,622 tourist facilities directly exposed.' },
+  { id:'TAIRL', x:1860, y:915, r:19, dom:'aviation', lbl:'Tourism &\nAirline\nIndustry Losses',
+    desc:'Aggregate direct revenue losses for GCC and global aviation and tourism sectors. Grounded carriers, cancelled routes, empty hotels, aborted Ramadan season, repatriation costs. Estimated $40bn+ for Gulf alone.' },
+  { id:'LLOG',  x:2150, y:915, r:19, dom:'logistics', lbl:'Logistics\nIndustry\nLosses',
+    desc:'Aggregate revenue and profit losses for global logistics and shipping: cancelled bookings, idle tonnage, diverted vessels, war-risk insurance at record highs, worldwide port congestion. DP World, Hapag-Lloyd, MSC, Maersk, CMA CGM all materially impacted.' },
+  { id:'GK3',   x:2750, y:915, r:19, dom:'defence',  lbl:'Domestic\nDefence Industry\nDevelopment',
+    desc:'Crisis accelerates Gulf ambitions to build a domestic defence industrial base: EDGE Group (UAE), SAMI (Saudi Arabia). Saudi localisation target: 50% of defence spending on domestic procurement by 2030. Long-term partially moderates the Vision impact.' },
+
+  // ── L5 ECONOMIC IMPACT (y=1125)
+  { id:'OILP',  x:160,  y:1125, r:20, dom:'finance',  lbl:'Oil Price\nShock',
+    desc:'Global oil price shock driven by Gulf supply disruption. Brent peaked above $119, averaging $90+ by 11 March. Feeds global asset slump (via energy inflation) and the revenue paradox (high prices, no exports).' },
+  { id:'GE1',   x:420,  y:1125, r:23, dom:'energy',   lbl:'Oil/gas\nRevenue\nLoss',
+    desc:'The core Gulf fiscal blow: Hormuz closure blocks oil/gas exports; GCC output fell ~6.7 mbpd by 10 March. Aramco 2025 profit already down 12% to ~$93bn before the war. Each dollar of Brent above breakeven enriches Russia and US shale while GCC sovereigns bleed reserves.' },
+  { id:'REVPAR',x:690,  y:1125, r:20, dom:'energy',   lbl:'Revenue\nParadox',
+    desc:'GCC producers cause the global oil price surge but cannot capture it. Saudi Arabia would earn ~$666m/day at $119/bbl at pre-war volumes. Instead SAMA burns reserves at $12–18bn/month while the revenue pipeline runs dry. Source: House of Saud, 12 March 2026.' },
+  { id:'GF1',   x:980,  y:1125, r:20, dom:'finance',  lbl:'Gulf Financial\nMarkets Slump',
+    desc:'UAE exchanges halted trading for two days; banking and real estate stocks fell sharply. Saudi Tadawul −5% (Aramco +3.7%). Kuwait Boursa suspended. Bahrain and Oman declined. DIFC strikes moved the threat from perception to physical reality.' },
+  { id:'GF3',   x:1250, y:1125, r:22, dom:'finance',  lbl:'FDI Flight &\nInvestment\nStall',
+    desc:'"Capital is a coward; it doesn\'t go into war zones" (F. Gregory Gause III). Chinese banks cutting Middle Eastern debt exposure. Saudi targeting ~$100bn FDI by 2030 (3× 2024 record); ~$840bn in Vision-exposed assets under stress.' },
+  { id:'GF2',   x:1520, y:1125, r:18, dom:'finance',  lbl:'Real Estate\nCorrection',
+    desc:'Expatriate exodus, investor flight, and direct DIFC strikes weigh on Gulf real estate. Fitch warned of up to 15% correction in Dubai. Bahrain and Kuwait face compounding banking sector stress. Note: correction lowers cost-of-living, partially easing talent retention.' },
+  { id:'GF8',   x:1770, y:1125, r:20, dom:'finance',  lbl:'Financial Hub\nModel\nThreatened',
+    desc:'DIFC has spent 20 years positioning Dubai as the region\'s pre-eminent financial centre. Deliberate, repeated targeting forces the structural question: will Goldman Sachs, JPMorgan, BlackRock maintain full regional HQ operations? Riyadh, Singapore, London are likely beneficiaries.' },
+  { id:'SWF',   x:2020, y:1125, r:21, dom:'finance',  lbl:'SWF Domestic\nRedeployment',
+    desc:'Three of four biggest GCC economies reviewing $5 trillion in SWF deployments. Reviews include reversing pledges, divestments, and re-evaluating sports sponsorship. GCC SWFs hold >$2 trillion in US assets — credible threat of pullback creates geopolitical leverage.' },
+  { id:'GK2',   x:2280, y:1125, r:18, dom:'defence',  lbl:'Financial\nPressure\non Visions',
+    desc:'Military expenditure surge "cannibalises investment in diversification programs" (ME Council). Bahrain faces this most acutely: pre-war deficit >10% of GDP, debt at 146% of GDP. Every dollar spent on interceptors is a dollar not invested in NEOM or tourism.' },
+  { id:'GA3',   x:2560, y:1125, r:18, dom:'aviation', lbl:'Long-term\nTourism\nDamage',
+    desc:'Viral explosion footage from Dubai\'s Palm Jumeirah and Doha luxury hotels pierces the Gulf\'s "safe, cosmopolitan" brand. Visitor intention data collapsing. Conference and event organisers relocating bookings. Gulf brand may take a decade to rebuild.' },
+  { id:'GH3',   x:2840, y:1125, r:18, dom:'human',    lbl:'Long-term\nAttractiveness\nSuffers',
+    desc:'The "safe, prosperous hub" narrative is the core draw for global talent. Future recruitment of top-tier professionals will be persistently harder. Saudi Arabia\'s Riyadh HQ mandate may prove insurmountable for many multinationals post-war.' },
+
+  // ── L6 SECTOR LOSSES & PORTFOLIOS (y=1335)
+  { id:'GLOS',  x:870,  y:1335, r:20, dom:'finance',  lbl:'Global\nAsset Slump',
+    desc:'Risk-off repricing across global equity and bond markets. Directly reduces the mark-to-market value of GCC SWFs — Saudi PIF ($913bn), Abu Dhabi funds (~$1.5tn), KIA (~$900bn), QIA (~$524bn). Each 10% decline in global equities represents ~$250bn in combined paper losses.' },
+  { id:'FINL',  x:1500, y:1335, r:19, dom:'finance',  lbl:'Financial\nIndustry\nLosses',
+    desc:'Aggregate losses for Gulf financial services: trading halts, asset write-downs, client withdrawals, compliance costs, DIFC evacuation disruption. Bahrain\'s banking industry faces existential stress with airport closed and causeway at risk.' },
+  { id:'SWFH',  x:2100, y:1335, r:20, dom:'finance',  lbl:'SWF Financial\nHealth Worsens',
+    desc:'Global asset slump and oil revenue loss reduce the mark-to-market value of GCC SWFs at exactly the moment reserves are needed most. Financial health deterioration triggers domestic redeployment decisions — a reinforcing feedback loop (→ SWF).' },
+  { id:'GP2',   x:2790, y:1335, r:21, dom:'positive', lbl:'Post-conflict\nOil Price\nWindfall',
+    desc:'Once Hormuz reopens, GCC producers can capture elevated global oil prices with full export capacity restored. Aramco shares rose 3.7% on day one — markets pricing in the eventual windfall. Oxford Economics raised 2027 GCC growth forecast by 1pp. Conditional on early end to conflict.' },
+
+  // ── L7 MACRO / SYSTEMIC (y=1545)
+  { id:'GM_1',    x:660,  y:1545, r:20, dom:'macro', lbl:'Gulf\nInflation',
+    desc:'Unlike global inflation (energy price rises), Gulf inflation is driven by structural shortages of imported goods blocked by Hormuz closure. Food CPI up ~2pp. Dollar peg prevents GCC central banks from using monetary policy to respond.' },
+  { id:'GM_2',    x:1320, y:1545, r:24, dom:'macro', lbl:'Fiscal Health\nDeterioration',
+    desc:'GCC entered the war already running ~$54bn aggregate deficit: Saudi −$44bn, Kuwait −$32bn, Qatar −$6bn, Bahrain −$2.85bn (>10% of GDP). Bahrain\'s public debt at 146% of GDP. "You can only bail somebody out if you have the cash yourself." (Khalid Janahi, Economist 12 March 2026)' },
+  { id:'PEGRISK', x:2060, y:1545, r:22, dom:'macro', lbl:'Riyal Peg &\nSAMA Reserves\nUnder Pressure',
+    desc:'SAMA holds ~$448bn to defend the 3.75 riyal/dollar peg since 1986. Monthly outflows: ~$28–35bn. Reserve cover: only 13–16 months — below the 24-month safe threshold. The PIF ($913bn) is largely illiquid. First genuine peg stress since 1986. Source: House of Saud, 12 March 2026.' },
+  { id:'GM_4',    x:2720, y:1545, r:20, dom:'macro', lbl:'Stagflation\nRisk',
+    desc:'Import-shortage inflation alongside economic growth slowdown. Dollar peg prevents GCC central banks from raising rates to fight inflation (would crush growth) or cutting rates (would threaten the peg). Historical precedent: 1973–74 oil shock — but GCC states were exporters then.' },
+
+  // ── L8 STRATEGIC (y=1755)
+  { id:'GM_7', x:1280, y:1755, r:26, dom:'macro', lbl:'Economic\nDiversification\nThreatened',
+    desc:'Saudi Vision 2030, UAE Centennial 2071, Qatar NV 2030, and NEOM all rest on the premise that the Gulf can leverage stability, foreign capital, and talent to diversify away from oil. The war strikes this premise from every direction simultaneously. Diversification set back "by years, not months" (ME Council).' },
+  { id:'GM_3', x:2500, y:1755, r:20, dom:'macro', lbl:'GCC Borrowing\nCosts Rise',
+    desc:'Gulf sovereigns face higher borrowing costs as credit risk is repriced. Saudi CDS spreads (73.4 bps) elevated. Bahrain — shallowest fiscal buffers, highest debt/GDP, no bypass pipeline — most exposed. Dollar peg removes all interest rate flexibility.' },
+
+  // ── L9 LONG-TERM END NODES (y=1960)
+  { id:'GM_8',  x:1280, y:1960, r:22, dom:'macro',    lbl:'Long-term\nGrowth\nProspects Muted',
+    desc:'Permanent reputational damage, lost investment flows, human capital flight, and defence spending crowding out diversification weigh on long-term growth. Oxford Economics raised 2027 GCC growth forecast by only 1pp for catch-up — conditional on an early end to the conflict.' },
+  { id:'DERIS', x:2500, y:1960, r:22, dom:'positive', lbl:'Long-term Global\nDerisking from\nGulf Oil/gas',
+    desc:'The war accelerates global diversification away from Gulf hydrocarbon dependence: governments accelerating energy transition timelines, importers seeking alternative LNG suppliers, insurers permanently raising war-risk premiums. Unlike previous Gulf crises, 2026 coincides with the energy transition when alternatives (US LNG, North Sea, African gas) are available.' },
+];
+
+// ================================================================
+// EDGES
+// ================================================================
+const EDGES = [
+  // ROOT → L1
+  {s:'ROOT',t:'GS1',type:'neg'},{s:'ROOT',t:'GS2',type:'neg'},
+  {s:'ROOT',t:'GS3',type:'neg'},{s:'ROOT',t:'GS5',type:'neg'},
+  {s:'ROOT',t:'GS6',type:'neg'},
+
+  // GS1 → L2/L3/L4/L5
+  {s:'GS1',t:'GE4',type:'neg'},
+  {s:'GS1',t:'GM3',type:'pot'},
+  {s:'GS1',t:'BYPASSES',type:'pos'},
+  {s:'GS1',t:'IEARES',type:'pos'},
+  {s:'GS1',t:'NHCL',type:'neg'},
+  {s:'GS1',t:'GL4',type:'neg'},
+  {s:'GS1',t:'GHCS',type:'neg'},
+  {s:'GS1',t:'GS4',type:'neg'},
+  {s:'GS1',t:'GE1',type:'neg'},
+  {s:'GS1',t:'GLOS',type:'neg'},
+
+  // GS2 → L3
+  {s:'GS2',t:'GA1',type:'neg'},
+  {s:'GS2',t:'GA4',type:'neg'},
+  {s:'GS2',t:'GS4',type:'neg'},
+  {s:'GS2',t:'NHCL',type:'neg'},
+
+  // GS3 → L2
+  {s:'GS3',t:'HCIS',type:'neg'},
+  {s:'GS3',t:'EPOW',type:'pot'},
+  {s:'GS3',t:'TRIS',type:'pot'},
+  {s:'GS3',t:'URB',type:'neg'},
+  {s:'GS3',t:'GD1',type:'neg'},
+  {s:'GS3',t:'GD3',type:'pot'},
+  {s:'GS3',t:'GF0',type:'neg'},
+  {s:'GS3',t:'GW1',type:'neg'},
+  {s:'GS3',t:'GL1',type:'neg'},
+  {s:'GS3',t:'BYPASSES',type:'pot'},
+  {s:'GS3',t:'GM_2',type:'neg'},
+  {s:'GS3',t:'GS4',type:'neg'},
+
+  // GS5, GS6
+  {s:'GS5',t:'GK1',type:'neg'},
+  {s:'GS6',t:'GS4',type:'neg'},
+  {s:'GS6',t:'GK4',type:'neg'},
+  {s:'GS6',t:'GK1',type:'neg'},
+  {s:'GS6',t:'GF3',type:'neg'},
+
+  // Layer 2 → downstream
+  {s:'GE4',t:'GE2',type:'neg'},
+  {s:'GE4',t:'GHCS',type:'neg'},
+  {s:'GM3',t:'GHCS',type:'neg'},
+  {s:'GM3',t:'BYPASSES',type:'neg'},
+  {s:'BYPASSES',t:'GHCS',type:'pos'},
+  {s:'BYPASSES',t:'GE1',type:'pos'},
+  {s:'IEARES',t:'GE1',type:'pos'},
+
+  {s:'GL1',t:'GL3',type:'neg'},
+  {s:'GL1',t:'NHCL',type:'neg'},
+  {s:'GL1',t:'GL4',type:'neg'},
+  {s:'GL1',t:'GM_1',type:'neg'},
+  {s:'GL1',t:'LLOG',type:'neg'},
+
+  {s:'HCIS',t:'GE2',type:'neg'},
+  {s:'HCIS',t:'GE5',type:'neg'},
+  {s:'HCIS',t:'GE1',type:'neg'},
+  {s:'HCIS',t:'GHCS',type:'neg'},
+  {s:'HCIS',t:'BYPASSES',type:'neg'},
+
+  {s:'EPOW',t:'GW3',type:'pot'},
+  {s:'EPOW',t:'GD2',type:'pot'},
+  {s:'EPOW',t:'GD1',type:'neg'},
+
+  {s:'URB',t:'GS4',type:'neg'},
+  {s:'URB',t:'GH1',type:'neg'},
+  {s:'URB',t:'GA2',type:'neg'},
+
+  {s:'TRIS',t:'GH1',type:'pot'},
+  {s:'TRIS',t:'GL4',type:'pot'},
+
+  {s:'GW1',t:'GW3',type:'pot'},
+
+  {s:'GD1',t:'GD2',type:'neg'},
+  {s:'GD3',t:'GD2',type:'pot'},
+
+  {s:'GF0',t:'GF1',type:'neg'},
+  {s:'GF0',t:'GF3',type:'neg'},
+  {s:'GF0',t:'GF8',type:'neg'},
+  {s:'GF0',t:'FINL',type:'neg'},
+
+  {s:'GK4',t:'GK1',type:'neg'},
+
+  // Layer 3 → downstream
+  {s:'GS4',t:'GM_3',type:'neg'},
+  {s:'GS4',t:'GH3',type:'neg'},
+  {s:'GS4',t:'GA3',type:'neg'},
+  {s:'GS4',t:'GF8',type:'neg'},
+  {s:'GS4',t:'GF2',type:'neg'},
+  {s:'GS4',t:'GL2',type:'neg'},
+  {s:'GS4',t:'DERIS',type:'neg'},
+  {s:'GS4',t:'GF1',type:'neg'},
+  {s:'GS4',t:'GF3',type:'neg'},
+
+  {s:'GE2',t:'GE3',type:'neg'},
+  {s:'GE2',t:'GE5',type:'neg'},
+  {s:'GE2',t:'GHCS',type:'neg'},
+
+  {s:'GE3',t:'GHCS',type:'neg'},
+
+  {s:'GL3',t:'NHCL',type:'neg'},
+  {s:'GL3',t:'GL4',type:'neg'},
+
+  {s:'GA1',t:'GA2',type:'neg'},
+  {s:'GA1',t:'GA4',type:'neg'},
+  {s:'GA1',t:'NHCL',type:'neg'},
+  {s:'GA4',t:'GA2',type:'neg'},
+
+  {s:'GK1',t:'GK2',type:'neg'},
+  {s:'GK1',t:'GK3',type:'pos'},
+  {s:'GK1',t:'GM_2',type:'neg'},
+
+  {s:'GD2',t:'GM_7',type:'neg'},
+
+  {s:'GH1',t:'GF2',type:'neg'},
+  {s:'GH1',t:'GF3',type:'neg'},
+  {s:'GH1',t:'GH3',type:'neg'},
+  {s:'GH1',t:'GM_7',type:'neg'},
+
+  // Layer 4 → downstream
+  {s:'GHCS',t:'GE1',type:'neg'},
+  {s:'GHCS',t:'OILP',type:'neg'},
+  {s:'GHCS',t:'DERIS',type:'neg'},
+
+  {s:'GE5',t:'GE1',type:'neg'},
+
+  {s:'NHCL',t:'GL2',type:'neg'},
+  {s:'NHCL',t:'GL4',type:'neg'},
+  {s:'NHCL',t:'LLOG',type:'neg'},
+  {s:'NHCL',t:'GM_1',type:'neg'},
+
+  {s:'GL2',t:'LLOG',type:'neg'},
+  {s:'GL2',t:'GM_7',type:'neg'},
+
+  {s:'GL4',t:'GM_1',type:'neg'},
+
+  {s:'GA2',t:'GF3',type:'neg'},
+  {s:'GA2',t:'TAIRL',type:'neg'},
+
+  {s:'TAIRL',t:'GF1',type:'neg'},
+  {s:'TAIRL',t:'GM_2',type:'neg'},
+
+  {s:'LLOG',t:'GM_2',type:'neg'},
+
+  {s:'GK3',t:'GM_7',type:'pos'},
+
+  // Layer 5 → downstream
+  {s:'OILP',t:'GLOS',type:'neg'},
+  {s:'OILP',t:'REVPAR',type:'neg'},
+
+  {s:'GE1',t:'GP2',type:'pos'},
+  {s:'GE1',t:'GF1',type:'neg'},
+  {s:'GE1',t:'REVPAR',type:'neg'},
+  {s:'GE1',t:'SWFH',type:'neg'},
+
+  {s:'REVPAR',t:'GM_2',type:'neg'},
+  {s:'REVPAR',t:'GP2',type:'pos'},
+
+  {s:'GF1',t:'GF2',type:'neg'},
+  {s:'GF1',t:'GF3',type:'neg'},
+  {s:'GF1',t:'SWFH',type:'neg'},
+  {s:'GF1',t:'FINL',type:'neg'},
+
+  {s:'GF3',t:'GM_8',type:'neg'},
+  {s:'GF3',t:'GK2',type:'neg'},
+  {s:'GF3',t:'GF8',type:'neg'},
+  {s:'GF3',t:'FINL',type:'neg'},
+
+  {s:'GF2',t:'GH3',type:'pos'},
+  {s:'GF2',t:'FINL',type:'neg'},
+
+  {s:'GF8',t:'GM_7',type:'neg'},
+  {s:'GF8',t:'SWF',type:'neg'},
+  {s:'GF8',t:'GLOS',type:'neg'},
+
+  {s:'SWF',t:'GF3',type:'pos'},
+  {s:'SWF',t:'GK2',type:'pos'},
+  {s:'SWF',t:'SWFH',type:'neg'},
+
+  {s:'GK2',t:'GM_7',type:'neg'},
+
+  {s:'GA3',t:'GF3',type:'neg'},
+  {s:'GH3',t:'GF3',type:'neg'},
+
+  // Layer 6 → downstream
+  {s:'GLOS',t:'GM_2',type:'neg'},
+  {s:'GLOS',t:'SWFH',type:'neg'},
+
+  {s:'FINL',t:'GM_2',type:'neg'},
+
+  {s:'SWFH',t:'GM_2',type:'neg'},
+  {s:'SWFH',t:'SWF',type:'back'},   // 🔁 feedback
+
+  // Layer 7 → downstream
+  {s:'GM_1',t:'GM_4',type:'neg'},
+  {s:'GM_1',t:'PEGRISK',type:'neg'},
+
+  {s:'GM_2',t:'GM_4',type:'neg'},
+  {s:'GM_2',t:'GM_8',type:'neg'},
+  {s:'GM_2',t:'PEGRISK',type:'neg'},
+  {s:'GM_2',t:'GM_3',type:'neg'},
+  {s:'GM_2',t:'GM_7',type:'neg'},
+
+  {s:'PEGRISK',t:'GM_1',type:'neg'},  // same-layer reinforcing arc
+  {s:'PEGRISK',t:'GM_3',type:'neg'},
+
+  // Layer 8 → downstream
+  {s:'GM_7',t:'GM_8',type:'neg'},
+  {s:'GM_4',t:'GM_8',type:'neg'},
+
+  // Layer 9
+  {s:'DERIS',t:'GM_8',type:'neg'},
+];
+
+// ================================================================
+// DOMAIN COLOURS
+// ================================================================
+const DCOL = {
+  conflict: '#dc2626', shock:    '#ea580c', energy:   '#d97706',
+  water:    '#0891b2', infra:    '#4f46e5', tech:     '#9333ea',
+  aviation: '#0d9488', logistics:'#7c3aed', food:     '#65a30d',
+  finance:  '#0284c7', human:    '#c2410c', defence:  '#e11d48',
+  macro:    '#2563eb', positive: '#16a34a',
+};
+
+// Layer labels
+const LAYER_LABELS = [
+  { y:75,   label:'L0 — Root cause' },
+  { y:285,  label:'L1 — Primary shocks' },
+  { y:495,  label:'L2 — Direct physical impacts' },
+  { y:705,  label:'L3 — First-order consequences' },
+  { y:915,  label:'L4 — Supply / market disruption' },
+  { y:1125, label:'L5 — Economic impact' },
+  { y:1335, label:'L6 — Sector losses & portfolios' },
+  { y:1545, label:'L7 — Macro / systemic' },
+  { y:1755, label:'L8 — Strategic' },
+  { y:1960, label:'L9 — Long-term end nodes' },
+];
+
+// ================================================================
+// RENDERING
+// ================================================================
+const svgEl = document.getElementById('graph');
+const svg   = d3.select('#graph');
+const defs  = svg.append('defs');
+
+// Background
+const bgG = defs.append('radialGradient').attr('id','bgG').attr('cx','50%').attr('cy','25%').attr('r','85%');
+bgG.append('stop').attr('offset','0%').attr('stop-color','#0d1840');
+bgG.append('stop').attr('offset','100%').attr('stop-color','#05091a');
+svg.append('rect').attr('width','100%').attr('height','100%').attr('fill','url(#bgG)');
+
+// Arrow markers
+function makeMarker(id, color) {
+  defs.append('marker').attr('id',id)
+    .attr('viewBox','0 -4 9 8').attr('refX',7).attr('refY',0)
+    .attr('markerWidth',5).attr('markerHeight',5).attr('orient','auto')
+    .append('path').attr('d','M0,-4L9,0L0,4').attr('fill',color);
+}
+makeMarker('arr-neg','#ef4444');
+makeMarker('arr-pos','#22c55e');
+makeMarker('arr-pot','rgba(239,68,68,0.55)');
+makeMarker('arr-back','#06b6d4');
+
+const mainG = svg.append('g').attr('class','root');
+
+// Layer separator lines + labels
+const lyrG = mainG.append('g').attr('id','layerG');
+const layerBoundaries = [183, 393, 603, 813, 1023, 1233, 1443, 1653, 1860];
+layerBoundaries.forEach(y => {
+  lyrG.append('line')
+    .attr('x1',0).attr('y1',y).attr('x2',3400).attr('y2',y)
+    .attr('stroke','rgba(255,255,255,0.04)').attr('stroke-width',1);
+});
+LAYER_LABELS.forEach(l => {
+  lyrG.append('text')
+    .attr('x',14).attr('y',l.y)
+    .attr('fill','rgba(148,163,184,0.42)')
+    .attr('font-size','8.5px')
+    .attr('font-family','DM Sans,sans-serif')
+    .attr('dominant-baseline','middle')
+    .text(l.label);
+});
+
+const edgeG = mainG.append('g').attr('id','edgeG');
+const nodeG = mainG.append('g').attr('id','nodeG');
+
+let nodeMap = {};
+function buildNodeMap() {
+  nodeMap = {};
+  NODES_DEF.forEach(n => { nodeMap[n.id] = n; });
+}
+
+// ── Edge path
+function computePath(s, t) {
+  const dx = t.x - s.x;
+  const dy = t.y - s.y;
+  const dist = Math.hypot(dx, dy);
+  if (dist < 2) return null;
+
+  if (dy < -35) {
+    // Backward (feedback) edge — arc above both nodes
+    const ux = dx / dist, uy = dy / dist;
+    const x1 = s.x + s.r * ux, y1 = s.y + s.r * uy;
+    const x2 = t.x - (t.r + 3) * ux, y2 = t.y - (t.r + 3) * uy;
+    const rise = 120 + Math.abs(dx) * 0.18;
+    const midX = (x1 + x2) / 2;
+    const midY = Math.min(s.y, t.y) - rise;
+    return `M${x1.toFixed(1)},${y1.toFixed(1)} Q${midX.toFixed(1)},${midY.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+  } else if (dy > 35) {
+    // Downward flow — S-curve cubic bezier
+    const x1 = s.x, y1 = s.y + s.r;
+    const x2 = t.x, y2 = t.y - t.r - 3;
+    const h = y2 - y1;
+    const lateralPull = Math.min(0.35, Math.abs(dx) / Math.max(h, 1) * 0.6);
+    const cp1x = x1 + dx * lateralPull;
+    const cp1y = y1 + h * 0.44;
+    const cp2x = x2 - dx * lateralPull;
+    const cp2y = y2 - h * 0.44;
+    return `M${x1.toFixed(1)},${y1.toFixed(1)} C${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+  } else {
+    // Lateral / same-layer — radial exit, arc drooping below
+    const ux = dx / dist, uy = dy / dist;
+    const x1 = s.x + s.r * ux, y1 = s.y + s.r * uy;
+    const x2 = t.x - (t.r + 3) * ux, y2 = t.y - (t.r + 3) * uy;
+    const drop = 55 + Math.abs(dx) * 0.12;
+    const midX = (x1 + x2) / 2;
+    const midY = Math.max(s.y, t.y) + drop;
+    return `M${x1.toFixed(1)},${y1.toFixed(1)} Q${midX.toFixed(1)},${midY.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+  }
+}
+
+function drawEdges() {
+  edgeG.selectAll('*').remove();
+  EDGES.forEach((e, ei) => {
+    const s = nodeMap[e.s], t = nodeMap[e.t];
+    if (!s || !t) return;
+    const d = computePath(s, t);
+    if (!d) return;
+
+    const isBack = e.type === 'back';
+    const isPot  = e.type === 'pot';
+    const isPos  = e.type === 'pos';
+
+    let col, op, sw, dash, marker;
+    if (isBack) {
+      col = '#06b6d4'; op = 0.60; sw = 1.3;
+      dash = '7 4'; marker = 'arr-back';
+    } else if (isPot) {
+      col = '#ef4444'; op = 0.35; sw = 1.2;
+      dash = '6 4'; marker = 'arr-pot';
+    } else if (isPos) {
+      col = '#22c55e'; op = 0.58; sw = 1.15;
+      dash = 'none'; marker = 'arr-pos';
+    } else {
+      col = '#ef4444'; op = 0.38; sw = 1.25;
+      dash = 'none'; marker = 'arr-neg';
+    }
+
+    edgeG.append('path')
+      .attr('class','edge-path').attr('data-ei', ei)
+      .attr('d', d).attr('fill','none').attr('stroke', col)
+      .attr('stroke-width', sw).attr('stroke-opacity', op)
+      .attr('stroke-dasharray', dash)
+      .attr('marker-end', `url(#${marker})`)
+      .on('mouseenter', function() {
+        d3.select(this).attr('stroke-opacity', Math.min(1, op*2.5)).attr('stroke-width', sw+0.9);
+      })
+      .on('mouseleave', function() {
+        d3.select(this).attr('stroke-opacity', op).attr('stroke-width', sw);
+      });
+  });
+}
+
+function drawNodes() {
+  nodeG.selectAll('*').remove();
+  defs.selectAll('[id^="ng"]').remove();
+
+  NODES_DEF.forEach(n => {
+    const col = DCOL[n.dom] || '#7ea8e0';
+    const hex = col.replace('#','');
+    const r2 = parseInt(hex.substring(0,2),16);
+    const g2 = parseInt(hex.substring(2,4),16);
+    const b2 = parseInt(hex.substring(4,6),16);
+
+    const gid = 'ng'+n.id;
+    const gr = defs.append('radialGradient').attr('id',gid).attr('cx','38%').attr('cy','32%').attr('r','68%');
+    gr.append('stop').attr('offset','0%').attr('stop-color',`rgba(${r2},${g2},${b2},0.40)`);
+    gr.append('stop').attr('offset','100%').attr('stop-color',`rgba(${r2},${g2},${b2},0.09)`);
+
+    const ng = nodeG.append('g')
+      .attr('class','node-g').attr('data-id', n.id)
+      .attr('transform',`translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
+
+    ng.append('circle').attr('r', n.r+11).attr('fill',`rgba(${r2},${g2},${b2},0.04)`);
+
+    ng.append('circle').attr('class','nc').attr('r', n.r)
+      .attr('fill',`url(#${gid})`).attr('stroke', col)
+      .attr('stroke-width', n.id==='ROOT' ? 2.5 : 1.4);
+
+    if (n.id==='ROOT') {
+      [16,30].forEach((off,i) => {
+        ng.append('circle').attr('r', n.r+off).attr('fill','none')
+          .attr('stroke',col).attr('stroke-width',0.7).attr('stroke-opacity',0.14-i*0.04);
+      });
+    }
+
+    const lines = n.lbl.split('\n');
+    const lh = 11, th = (lines.length-1)*lh;
+    lines.forEach((line, i) => {
+      ng.append('text')
+        .attr('x',0).attr('y',-th/2+i*lh+(lines.length>1?1:4))
+        .attr('text-anchor','middle').attr('dominant-baseline','middle')
+        .attr('fill','#fff')
+        .attr('font-size', n.id==='ROOT'?'13px':(n.r>=23?'9px':'8px'))
+        .attr('font-weight', n.id==='ROOT'?'700':'400')
+        .attr('font-family', n.id==='ROOT'?'Playfair Display,serif':'DM Sans,sans-serif')
+        .attr('pointer-events','none').text(line);
+    });
+
+    ng.append('circle').attr('r', n.r+11).attr('fill','transparent')
+      .on('mouseenter', ev => { showTip(ev, n); highlightNode(n.id, true); })
+      .on('mousemove',  ev => { moveTip(ev); })
+      .on('mouseleave', ()  => { hideTip(); highlightNode(n.id, false); });
+  });
+}
+
+function highlightNode(id, on) {
+  edgeG.selectAll('.edge-path').each(function() {
+    const e = EDGES[+d3.select(this).attr('data-ei')];
+    if (!e) return;
+    const connected = (e.s===id || e.t===id);
+    const isBack = e.type==='back', isPot=e.type==='pot', isPos=e.type==='pos';
+    const baseOp = isBack ? 0.60 : isPot ? 0.35 : isPos ? 0.58 : 0.38;
+    const baseSw = isBack ? 1.3 : isPos ? 1.15 : 1.25;
+    if (on && connected) {
+      d3.select(this).attr('stroke-opacity', 0.95).attr('stroke-width', baseSw+1.2);
+    } else if (on) {
+      d3.select(this).attr('stroke-opacity', 0.05);
+    } else {
+      d3.select(this).attr('stroke-opacity', baseOp).attr('stroke-width', baseSw);
+    }
+  });
+}
+
+function redraw() { buildNodeMap(); drawEdges(); drawNodes(); }
+redraw();
+
+// ── Zoom / Pan
+const zoom = d3.zoom().scaleExtent([0.09, 6])
+  .on('zoom', ev => { mainG.attr('transform', ev.transform); });
+svg.call(zoom);
+
+function fitView() {
+  const w = svgEl.clientWidth || 1400, h = svgEl.clientHeight || 800, pad = 55;
+  const xs = NODES_DEF.flatMap(n => [n.x-n.r, n.x+n.r]);
+  const ys = NODES_DEF.flatMap(n => [n.y-n.r, n.y+n.r]);
+  const x0=Math.min(...xs)-pad, x1=Math.max(...xs)+pad;
+  const y0=Math.min(...ys)-pad, y1=Math.max(...ys)+pad;
+  const sc=Math.min(w/(x1-x0), h/(y1-y0))*0.96;
+  svg.transition().duration(450)
+    .call(zoom.transform, d3.zoomIdentity
+      .translate(w/2-(x0+(x1-x0)/2)*sc, h/2-(y0+(y1-y0)/2)*sc).scale(sc));
+}
+document.getElementById('zi').onclick=()=>svg.transition().call(zoom.scaleBy,1.3);
+document.getElementById('zo').onclick=()=>svg.transition().call(zoom.scaleBy,0.77);
+document.getElementById('zr').onclick=fitView;
+setTimeout(fitView, 80);
+window.addEventListener('resize', fitView);
+
+// ── Tooltip
+const ttEl = document.getElementById('tt');
+function showTip(ev, n) {
+  ttEl.innerHTML=`<div class="ti">${n.id}</div><div class="tl">${n.lbl.replace(/\n/g,' ')}</div><div class="td">${n.desc}</div>`;
+  ttEl.classList.add('show'); moveTip(ev);
+}
+function moveTip(ev) {
+  const tw=270, pad=16;
+  let lx=ev.clientX+pad;
+  if(lx+tw>window.innerWidth-8) lx=ev.clientX-tw-pad;
+  ttEl.style.left=lx+'px'; ttEl.style.top=(ev.clientY-14)+'px';
+}
+function hideTip(){ttEl.classList.remove('show');}
+</script>
+</body>
+</html>

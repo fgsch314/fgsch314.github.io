@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "_row.html" import row %}
+{% block title %}Work — {{ site.short_name }}{% endblock %}
+{% block main %}
+<section class="wrap section">
+  <p class="kicker">All outputs</p>
+  <h1 class="display display-sm">Work</h1>
+  <p class="lede">Policy analysis, academic research and media commentary — {{ n_total }} items, newest first.</p>
+
+  <div class="filters" role="group" aria-label="Filter">
+    <div class="chips">
+      <button class="fchip" data-type="" aria-pressed="true">All <span>{{ n_total }}</span></button>
+      {% for t, label in type_label.items() %}
+      <button class="fchip" data-type="{{ t }}" aria-pressed="false">{{ label }} <span>{{ counts[t] }}</span></button>
+      {% endfor %}
+      {% for slug, label in site.topics.items() %}
+      <button class="fchip fchip-topic" data-topic="{{ slug }}" aria-pressed="false">{{ label }}</button>
+      {% endfor %}
+    </div>
+    <input class="search" type="search" placeholder="Search titles and outlets" aria-label="Search">
+  </div>
+  <p class="count muted" aria-live="polite"></p>
+
+  {% for y in years %}
+  <div class="year-block" data-year="{{ y }}">
+    <h2 class="year">{{ y }}</h2>
+    <ul class="rows">
+      {% for i in items if i.date[:4] == y %}{{ row(i, type_label, site) }}{% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+  {% set undated = items|selectattr('date','equalto','')|list %}
+  {% if undated %}
+  <div class="year-block" data-year="">
+    <h2 class="year">Working papers</h2>
+    <ul class="rows">{% for i in undated %}{{ row(i, type_label, site) }}{% endfor %}</ul>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/work.js"></script>{% endblock %}

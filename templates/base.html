@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ site.short_name }} — Gulf economist{% endblock %}</title>
+{% if site.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+<meta name="description" content="{{ site.headline }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <a class="wordmark" href="/">{{ site.short_name }}</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/work/" {% if page.startswith('work') %}aria-current="page"{% endif %}>Work</a>
+      <a href="/work/?type=academic">Research</a>
+      <a href="/#charts">Data</a>
+      <a href="/work/?type=media">Media</a>
+      <a href="/#about">About</a>
+      <a class="nav-cta" href="mailto:{{ site.email }}">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+{% block main %}{% endblock %}
+</main>
+<footer class="footer">
+  <div class="wrap footer-row">
+    <div>
+      <div class="wordmark">{{ site.short_name }}</div>
+      <p class="muted">{{ site.role }}</p>
+    </div>
+    <div class="footer-links">
+      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <a href="{{ site.linkedin }}">LinkedIn</a>
+      <a href="{{ site.cv }}">CV (PDF)</a>
+    </div>
+  </div>
+  <div class="wrap muted small">© {{ year }} · {{ n_total }} outputs listed</div>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

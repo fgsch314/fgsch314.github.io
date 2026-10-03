@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>Hormuz Exposure vs. Stock Market Reaction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1200px;
+    height: 675px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background: #05091a;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  #title-block {
+    width: 1200px;
+    height: 60px;
+    background: #0d1530;
+    border-bottom: 1px solid #2a3a60;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  #title-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  #chart-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #e2e8f0;
+    line-height: 1.2;
+  }
+
+  #chart-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 400;
+  }
+
+  #legend {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  #chart-container {
+    width: 1200px;
+    height: 595px;
+    background: #05091a;
+  }
+
+  #chart-svg {
+    display: block;
+  }
+
+  #footer {
+    width: 1200px;
+    height: 20px;
+    background: #0d1530;
+    border-top: 1px solid #2a3a60;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  .footer-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    color: #94a3b8;
+  }
+</style>
+</head>
+<body>
+
+<!-- Title Block -->
+<div id="title-block">
+  <div id="title-left">
+    <span id="chart-title">Hormuz Exposure vs. Stock Market Reaction</span>
+    <span id="chart-subtitle">Equity benchmark decline since 28 February 2026</span>
+  </div>
+  <div id="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#f59e0b;"></div>
+      <span>East &amp; SE Asia</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#f97316;"></div>
+      <span>South Asia</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#06b6d4;"></div>
+      <span>Europe</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#22c55e;"></div>
+      <span>Pacific</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#94a3b8;"></div>
+      <span>Americas</span>
+    </div>
+  </div>
+</div>
+
+<!-- Chart Container -->
+<div id="chart-container">
+  <svg id="chart-svg" width="1200" height="595"></svg>
+</div>
+
+<!-- Footer -->
+<div id="footer">
+  <span class="footer-text">ME Council on Global Affairs · March 2026</span>
+  <span class="footer-text">Bubble size = GDP 2024 (USD). Market data: mid-March 2026 snapshot. Energy exposure: EIA, IEA, Energy Institute.</span>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const data = [
+  // East & SE Asia
+  { country: "China",       region: "East & SE Asia",  hormuz: 10.7, marketChg: -3.0,  gdp: 18600 },
+  { country: "Japan",       region: "East & SE Asia",  hormuz: 35.5, marketChg: -11.0, gdp: 4200  },
+  { country: "South Korea", region: "East & SE Asia",  hormuz: 28.2, marketChg: -16.0, gdp: 1760  },
+  { country: "Taiwan",      region: "East & SE Asia",  hormuz: 27.8, marketChg: -14.0, gdp: 790   },
+  { country: "Thailand",    region: "East & SE Asia",  hormuz: 37.8, marketChg: -12.0, gdp: 580   },
+  { country: "Vietnam",     region: "East & SE Asia",  hormuz: 31.0, marketChg: -9.0,  gdp: 450   },
+  { country: "Indonesia",   region: "East & SE Asia",  hormuz: 9.4,  marketChg: -7.5,  gdp: 1380  },
+  // South Asia
+  { country: "India",       region: "South Asia",      hormuz: 19.6, marketChg: -7.0,  gdp: 3900  },
+  { country: "Pakistan",    region: "South Asia",      hormuz: 18.8, marketChg: -9.5,  gdp: 375   },
+  { country: "Bangladesh",  region: "South Asia",      hormuz: 17.1, marketChg: -6.0,  gdp: 460   },
+  // Europe
+  { country: "Germany",     region: "Europe",          hormuz: 3.5,  marketChg: -9.0,  gdp: 4500  },
+  { country: "France",      region: "Europe",          hormuz: 2.6,  marketChg: -9.0,  gdp: 3050  },
+  { country: "Italy",       region: "Europe",          hormuz: 8.3,  marketChg: -8.0,  gdp: 2250  },
+  { country: "UK",          region: "Europe",          hormuz: 3.2,  marketChg: -5.3,  gdp: 3100  },
+  { country: "Turkey",      region: "Europe",          hormuz: 6.5,  marketChg: -6.0,  gdp: 1250  },
+  // Pacific
+  { country: "Australia",   region: "Pacific",         hormuz: 7.9,  marketChg: -6.0,  gdp: 1780  },
+  // Americas
+  { country: "US",          region: "Americas",        hormuz: 1.1,  marketChg: -3.6,  gdp: 28800 },
+];
+
+const regionColors = {
+  "East & SE Asia": "#f59e0b",
+  "South Asia":     "#f97316",
+  "Europe":         "#06b6d4",
+  "Pacific":        "#22c55e",
+  "Americas":       "#94a3b8",
+  "Gulf exporter":  "#ef4444",
+};
+
+// ─── CHART DIMENSIONS ───────────────────────────────────────────────────────
+const svgW = 1200, svgH = 595;
+const margin = { top: 20, right: 30, bottom: 50, left: 52 };
+const chartW = svgW - margin.left - margin.right;
+const chartH = svgH - margin.top - margin.bottom;
+
+const svg = d3.select("#chart-svg");
+
+// Defs for subtle glow
+const defs = svg.append("defs");
+const filter = defs.append("filter").attr("id", "bubble-glow");
+filter.append("feGaussianBlur").attr("in", "SourceAlpha").attr("stdDeviation", 3).attr("result", "blur");
+filter.append("feComposite").attr("in", "blur").attr("in2", "SourceGraphic").attr("operator", "over");
+
+const g = svg.append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
+
+// ─── SCALES ─────────────────────────────────────────────────────────────────
+const xScale = d3.scaleLinear().domain([0, 40]).range([0, chartW]);
+const yScale = d3.scaleLinear().domain([0, -20]).range([0, chartH]); // 0 at top, -20 at bottom
+
+// GDP radius scale
+const gdpExtent = d3.extent(data, d => d.gdp);
+const rScale = d3.scaleSqrt().domain([0, gdpExtent[1]]).range([0, 42]);
+const rMin = 8;
+const radius = d => Math.max(rMin, rScale(d.gdp));
+
+// ─── GRID LINES ─────────────────────────────────────────────────────────────
+const gridStyle = { stroke: "rgba(255,255,255,0.06)", strokeWidth: 1 };
+
+// X grid
+[0,5,10,15,20,25,30,35,40].forEach(v => {
+  g.append("line")
+    .attr("x1", xScale(v)).attr("x2", xScale(v))
+    .attr("y1", 0).attr("y2", chartH)
+    .attr("stroke", gridStyle.stroke)
+    .attr("stroke-width", gridStyle.strokeWidth);
+});
+
+// Y grid
+[0,-5,-10,-15,-20].forEach(v => {
+  g.append("line")
+    .attr("x1", 0).attr("x2", chartW)
+    .attr("y1", yScale(v)).attr("y2", yScale(v))
+    .attr("stroke", gridStyle.stroke)
+    .attr("stroke-width", gridStyle.strokeWidth);
+});
+
+// ─── AXES ────────────────────────────────────────────────────────────────────
+const axisStyle = { fill: "#94a3b8", fontFamily: "'DM Sans', sans-serif", fontSize: "11px" };
+
+// X axis ticks
+[0,5,10,15,20,25,30,35,40].forEach(v => {
+  g.append("line")
+    .attr("x1", xScale(v)).attr("x2", xScale(v))
+    .attr("y1", chartH).attr("y2", chartH + 5)
+    .attr("stroke", "#2a3a60");
+  g.append("text")
+    .attr("x", xScale(v))
+    .attr("y", chartH + 17)
+    .attr("text-anchor", "middle")
+    .style("fill", axisStyle.fill)
+    .style("font-family", axisStyle.fontFamily)
+    .style("font-size", axisStyle.fontSize)
+    .text(v + "%");
+});
+
+// X axis label
+g.append("text")
+  .attr("x", chartW / 2)
+  .attr("y", chartH + 42)
+  .attr("text-anchor", "middle")
+  .style("fill", "#94a3b8")
+  .style("font-family", "'DM Sans', sans-serif")
+  .style("font-size", "11px")
+  .text("Hormuz energy exposure (%)");
+
+// Y axis ticks
+[0,-5,-10,-15,-20].forEach(v => {
+  g.append("line")
+    .attr("x1", -5).attr("x2", 0)
+    .attr("y1", yScale(v)).attr("y2", yScale(v))
+    .attr("stroke", "#2a3a60");
+  g.append("text")
+    .attr("x", -8)
+    .attr("y", yScale(v) + 4)
+    .attr("text-anchor", "end")
+    .style("fill", axisStyle.fill)
+    .style("font-family", axisStyle.fontFamily)
+    .style("font-size", axisStyle.fontSize)
+    .text(v + "%");
+});
+
+// Y axis label
+g.append("text")
+  .attr("transform", `translate(-38, ${chartH / 2}) rotate(-90)`)
+  .attr("text-anchor", "middle")
+  .style("fill", "#94a3b8")
+  .style("font-family", "'DM Sans', sans-serif")
+  .style("font-size", "11px")
+  .text("Stock market change (%)");
+
+// Axis border line (bottom)
+g.append("line")
+  .attr("x1", 0).attr("x2", chartW)
+  .attr("y1", chartH).attr("y2", chartH)
+  .attr("stroke", "#2a3a60").attr("stroke-width", 1);
+
+// Axis border line (left)
+g.append("line")
+  .attr("x1", 0).attr("x2", 0)
+  .attr("y1", 0).attr("y2", chartH)
+  .attr("stroke", "#2a3a60").attr("stroke-width", 1);
+
+// ─── REGRESSION LINE (OLS excluding Saudi Arabia) ───────────────────────────
+const regData = data.filter(d => d.country !== "Saudi Arabia");
+const n = regData.length;
+const meanX = d3.mean(regData, d => d.hormuz);
+const meanY = d3.mean(regData, d => d.marketChg);
+const slope = d3.sum(regData, d => (d.hormuz - meanX) * (d.marketChg - meanY)) /
+              d3.sum(regData, d => (d.hormuz - meanX) ** 2);
+const intercept = meanY - slope * meanX;
+
+// R²
+const ssTot = d3.sum(regData, d => (d.marketChg - meanY) ** 2);
+const ssRes = d3.sum(regData, d => (d.marketChg - (intercept + slope * d.hormuz)) ** 2);
+const r2 = 1 - ssRes / ssTot;
+
+const x1reg = 0, x2reg = 40;
+const y1reg = intercept + slope * x1reg;
+const y2reg = intercept + slope * x2reg;
+
+g.append("line")
+  .attr("x1", xScale(x1reg)).attr("y1", yScale(y1reg))
+  .attr("x2", xScale(x2reg)).attr("y2", yScale(y2reg))
+  .attr("stroke", "rgba(255,255,255,0.4)")
+  .attr("stroke-width", 1.5)
+  .attr("stroke-dasharray", "5,4");
+
+// R² label near right end — anchored right so it doesn't clip
+g.append("text")
+  .attr("x", xScale(39.2))
+  .attr("y", yScale(intercept + slope * 39.2) - 8)
+  .attr("text-anchor", "end")
+  .style("fill", "rgba(255,255,255,0.45)")
+  .style("font-family", "'DM Sans', sans-serif")
+  .style("font-size", "9px")
+  .text(`R² = ${r2.toFixed(2)}`);
+
+// ─── BUBBLES ─────────────────────────────────────────────────────────────────
+data.forEach(d => {
+  const cx = xScale(d.hormuz);
+  const cy = yScale(d.marketChg);
+  const r = radius(d);
+  const color = regionColors[d.region];
+
+  if (d.country === "Saudi Arabia") {
+    svg.select("g").append("circle")
+      .attr("cx", cx).attr("cy", cy).attr("r", r)
+      .attr("fill", color)
+      .attr("fill-opacity", 0.75)
+      .attr("stroke", color)
+      .attr("stroke-width", 1.5)
+      .attr("stroke-dasharray", "5,3");
+  } else {
+    svg.select("g").append("circle")
+      .attr("cx", cx).attr("cy", cy).attr("r", r)
+      .attr("fill", color)
+      .attr("fill-opacity", 0.8)
+      .attr("stroke", d3.color(color).darker(0.5))
+      .attr("stroke-width", 0.5);
+  }
+});
+
+// ─── LABELS ──────────────────────────────────────────────────────────────────
+// Per-country label offset config: [dx, dy, anchor]
+// dx/dy are offsets from bubble centre; leader line drawn from bubble edge to label
+// anchor: "start" | "end" | "middle"
+const labelConfig = {
+  // Large bubbles – offset enough to clear the large radius
+  "China":       { dx:  40, dy: -38, anchor: "start" },  // above-right, clears r=34
+  "US":          { dx:  46, dy:  -6, anchor: "start" },  // right of very large bubble r=42
+  // East & SE Asia – near right edge; Japan above-left, Thailand below-left
+  "Japan":       { dx: -16, dy: -22, anchor: "end"   },  // above-left
+  "Thailand":    { dx: -16, dy:  22, anchor: "end"   },  // below-left
+  "Vietnam":     { dx: -16, dy: -16, anchor: "end"   },  // above-left
+  "South Korea": { dx:  16, dy:  18, anchor: "start" },  // below-right
+  "Taiwan":      { dx: -16, dy: -16, anchor: "end"   },  // above-left
+  "Indonesia":   { dx:   0, dy:  22, anchor: "middle"},  // below
+  // South Asia – Bangladesh above-right, India below-right (different y, ~2.5% apart)
+  "Bangladesh":  { dx:  14, dy: -16, anchor: "start" },  // above-right
+  "India":       { dx:  20, dy:  18, anchor: "start" },  // below-right, extra dx to separate
+  "Pakistan":    { dx:  14, dy:  16, anchor: "start" },  // below-right
+  // Europe – Germany above, France below (same x cluster)
+  "Germany":     { dx:  14, dy: -16, anchor: "start" },  // above-right
+  "France":      { dx:  14, dy:  18, anchor: "start" },  // below-right
+  "Italy":       { dx:  14, dy: -16, anchor: "start" },  // above-right (Indonesia is below)
+  "UK":          { dx:  14, dy: -16, anchor: "start" },  // above-right
+  "Turkey":      { dx: -12, dy: -16, anchor: "end"   },  // above-left (Australia is right)
+  // Pacific
+  "Australia":   { dx:  14, dy:  18, anchor: "start" },  // below-right
+};
+
+data.forEach(d => {
+  const cx = xScale(d.hormuz);
+  const cy = yScale(d.marketChg);
+  const r = radius(d);
+  const cfg = labelConfig[d.country] || { dx: 14, dy: 0, anchor: "start" };
+
+  // Compute start point on bubble edge in the direction of label
+  const angle = Math.atan2(cfg.dy, cfg.dx);
+  const ex = cx + Math.cos(angle) * (r + 2);
+  const ey = cy + Math.sin(angle) * (r + 2);
+
+  // Only draw leader line when offset is large enough to need one
+  const dist = Math.sqrt(cfg.dx * cfg.dx + cfg.dy * cfg.dy);
+  if (dist > 18) {
+    // End point: slightly short of the label text (80% of the way)
+    const lx2 = cx + cfg.dx * 0.78;
+    const ly2 = cy + cfg.dy * 0.78;
+    g.append("line")
+      .attr("x1", ex).attr("y1", ey)
+      .attr("x2", lx2).attr("y2", ly2)
+      .attr("stroke", "rgba(148,163,184,0.30)")
+      .attr("stroke-width", 1);
+  }
+
+  g.append("text")
+    .attr("x", cx + cfg.dx)
+    .attr("y", cy + cfg.dy)
+    .attr("text-anchor", cfg.anchor)
+    .attr("dominant-baseline", "middle")
+    .style("fill", "#e2e8f0")
+    .style("font-family", "'DM Sans', sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "400")
+    .text(d.country);
+});
+
+
+
+</script>
+</body>
+</html>

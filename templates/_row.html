@@ -1,0 +1,16 @@
+{% macro row(i, type_label, site) -%}
+<li class="row" data-type="{{ i.type }}" data-topics="{{ i.topics|join(' ') }}" data-year="{{ i.date[:4] }}">
+  <span class="row-date">{{ i.date|fdate }}</span>
+  <div class="row-body">
+    <a class="row-title" href="{{ i.url or '#' }}" {% if i.lang == 'Arabic' %}dir="auto"{% endif %}>{{ i.title }}</a>
+    {% if i.title_en %}<span class="row-trans">{{ i.title_en }}</span>{% endif %}
+    <span class="row-meta">
+      <span class="chip chip-{{ i.type }}">{{ i.format }}</span>
+      {% if i.outlet %}{{ i.outlet }}{% endif %}
+      {% if i.coauthors %} · with {{ i.coauthors }}{% endif %}
+      {% if i.url_ar %} · <a href="{{ i.url_ar }}">العربية</a>{% endif %}
+      {% for t in i.topics %} · <span class="topic">{{ site.topics[t] }}</span>{% endfor %}
+    </span>
+  </div>
+</li>
+{%- endmacro %}

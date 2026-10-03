@@ -1,0 +1,70 @@
+# Site-wide settings and the hand-curated bits (bio, charts). Outputs live in outputs.yaml.
+name: Frédéric-Guillaume Schneider
+short_name: Frédéric Schneider
+url: https://fredericgschneider.com
+# Keep search engines off the preview until the domain switch (set false at launch).
+noindex: true
+role: Gulf economist · Senior Fellow, Middle East Council on Global Affairs
+headline: Economic analysis of the Gulf’s post-oil transition — and of the war that is reshaping it.
+bio: >-
+  I work on Gulf and MENA economic policy: diversification, industrial policy, trade,
+  labour markets and the energy transition. I write for leading think-tanks, advise
+  government institutions in the UAE and Qatar, and comment regularly for the BBC,
+  Al Jazeera, CNN and the Washington Post.
+bio_academic: >-
+  I hold a doctorate in economics from the University of Zurich and have held research
+  positions at UC Berkeley, Yale and Cambridge. My academic work uses experimental and
+  behavioural methods to study cooperation, trust and labour-market outcomes.
+email: frederic@fredericgschneider.com
+linkedin: https://www.linkedin.com/in/fredericgschneider/
+cv: /static/files/cv-frederic-schneider.pdf
+portrait: /static/img/portrait.jpg
+
+# Outlets shown in the "As seen in" strip (in this order).
+press: [New York Times, Washington Post, BBC, CNN, Al Jazeera, Bloomberg TV, DW, Euronews, The National]
+
+# Topics: slug -> label. Items carry topic slugs in outputs.yaml.
+topics:
+  iran-war: War on Iran
+
+# Topic spotlight shown on the homepage (null to hide).
+spotlight:
+  topic: iran-war
+  blurb: >-
+    Since February 2026 I have tracked the economic consequences of the U.S.–Israeli war on
+    Iran for the Gulf and the world economy — Hormuz, oil and gas, food, finance and the
+    future of Gulf diversification.
+
+charts:
+  - title: Gulf port throughput after the Hormuz closure
+    image: /static/img/ports-map.png
+    caption: Which Gulf ports lost traffic and which bypass ports gained.
+    topics: [iran-war]
+    date: 2026-06
+  - title: The 2026 oil shock in historical perspective
+    image: /static/img/oil-shocks-wti.png
+    caption: WTI rose 41% in March. Daily prices since the start of each major crisis of the last 40 years.
+    topics: [iran-war]
+    date: 2026-04
+  - title: Hormuz exposure and stock-market performance
+    image: /static/img/hormuz-scatter.png
+    link: /diagrams/hormuz_scatter.html
+    caption: The more a country depends on Hormuz-transiting hydrocarbons, the further its main index has fallen.
+    topics: [iran-war]
+    date: 2026-03
+  - title: Global consequences of the war on Iran
+    image: /static/img/iran-global.png
+    link: /diagrams/iran_war_radial_3.html
+    caption: From Hormuz and airspace closures through supply shocks to inflation, rates and growth.
+    topics: [iran-war]
+    date: 2026-03
+  - title: GCC nightlight intensity, 1992–2023
+    image: /static/img/nightlights.png
+    caption: Satellite nightlights as a proxy for economic activity across the Gulf.
+    topics: []
+    date: 2024
+  - title: Hydrocarbon revenue per capita (2024)
+    image: /static/img/hydrocarbons-percapita.png
+    caption: Oil and gas revenue per head; Qatar leads by a wide margin.
+    topics: []
+    date: 2024

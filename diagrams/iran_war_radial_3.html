@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Economic Effects of the War on Iran 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+:root{--bg:#05091a;--surf:#0d1530;--surf2:#1a2545;--bord:#2a3a60;--txt:#e2e8f0;--muted:#94a3b8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+
+/* ── HEADER ── */
+#hdr{padding:10px 18px;background:var(--surf);border-bottom:1px solid var(--bord);display:flex;align-items:center;gap:18px;flex-shrink:0;flex-wrap:wrap;}
+#hdr h1{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;white-space:nowrap;}
+#hdr .auth{font-size:10px;color:var(--muted);white-space:nowrap;}
+#legend{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.li{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--muted);}
+.ll{display:flex;align-items:center;gap:3px;}
+.lline{height:1.5px;width:22px;}
+.lline.neg{background:#ef4444;}
+.lline.pos{background:#22c55e;}
+.lline.pot{background:none;border-top:2px dashed #ef4444;width:22px;}
+.larr{width:0;height:0;border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;}
+.larr.neg{border-left:6px solid #ef4444;}
+.larr.pos{border-left:6px solid #22c55e;}
+.larr.pot{border-left:6px solid #ef4444;opacity:0.6;}
+#toolbar{margin-left:auto;display:flex;gap:7px;align-items:center;}
+.eb{background:var(--surf2);border:1px solid var(--bord);color:var(--txt);padding:4px 9px;border-radius:5px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:background .15s;}
+.eb:hover{background:#243560;}
+
+/* ── CHART ── */
+#chart{flex:1;position:relative;overflow:hidden;}
+#chart svg{width:100%;height:100%;cursor:grab;}
+#chart svg:active{cursor:grabbing;}
+
+/* ── TOOLTIP ── */
+#tt{position:absolute;background:rgba(13,21,48,0.97);border:1px solid var(--bord);border-radius:8px;padding:10px 13px;max-width:260px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100;}
+#tt.show{opacity:1;}
+#tt .ti{font-size:9.5px;color:#60a5fa;font-weight:600;letter-spacing:.06em;margin-bottom:3px;}
+#tt .tl{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:#e2e8f0;margin-bottom:5px;line-height:1.3;}
+#tt .td{font-size:11px;color:#94a3b8;line-height:1.5;}
+
+/* ── CONTEXT MENU ── */
+
+/* ── MODALS ── */
+
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div>
+    <h1>Global Economic Effects of the War on Iran</h1>
+    <div class="auth">Frédéric Schneider · ME Council on Global Affairs · March 2026</div>
+  </div>
+  <div id="legend">
+    <div class="li"><div class="ll"><div class="lline neg"></div><div class="larr neg"></div></div>Negative effect</div>
+    <div class="li"><div class="ll"><div class="lline pos"></div><div class="larr pos"></div></div>Positive effect</div>
+    <div class="li"><div class="ll"><div class="lline pot"></div><div class="larr pot"></div></div>Potential effect</div>
+  </div>
+  <div id="toolbar">
+    <div id="view-hint" style="font-size:10px;color:var(--muted);">Scroll to zoom · Drag to pan · Hover nodes</div>
+    <button class="eb" id="zi">＋</button>
+    <button class="eb" id="zo">－</button>
+    <button class="eb" id="zr">⊡ Fit</button>
+  </div>
+</div>
+<div id="chart">
+  <svg id="graph"></svg>
+</div>
+
+<div id="tt"></div>
+
+<script>
+// ================================================================
+// DATA — layout derived from Frédéric Schneider's PowerPoint, March 2026
+// Node (x,y) coordinates are in SVG space (War on Iran = 900,900)
+// ================================================================
+
+let NODES_DEF = [
+  { id:'ROOT',  x:900,  y:900,  r:34, dom:'conflict', lbl:'War on\nIran',
+    desc:'U.S.-Israeli military campaign against Iran, triggering retaliation across the Gulf and cascading global economic shockwaves.' },
+  { id:'S1',    x:905,  y:806,  r:28, dom:'shock',    lbl:'Strait of\nHormuz Closure',
+    desc:'Iran effectively closes the Strait of Hormuz — through which ~20% of global oil and LNG trade passes — via tanker attacks and blockade warnings.' },
+  { id:'S2',    x:748,  y:898,  r:24, dom:'shock',    lbl:'Airspace\nClosure',
+    desc:'Gulf and Iranian airspace closures force massive airline rerouting, cancellations, and costly repatriation flights — on top of existing Russia overfly bans.' },
+  { id:'S3',    x:1085, y:942,  r:24, dom:'shock',    lbl:'Infrastructure\nDestruction',
+    desc:'Iranian strikes damage key Gulf assets: Ras Laffan LNG hub, airports, desalination plants, data centres, military installations.' },
+  { id:'S4',    x:891,  y:1006, r:22, dom:'shock',    lbl:'Geopolitical\nUncertainty',
+    desc:'The Gulf\'s reputation as a stable, conflict-free zone is shattered. Risk is repriced across all asset classes globally.' },
+  { id:'E1',    x:1258, y:764,  r:24, dom:'energy',   lbl:'Oil Supply\nShock',
+    desc:'Hormuz closure removes ~20 million barrels/day from markets. Brent surged past $120/bbl; analysts warn of $150+ in a sustained blockade.' },
+  { id:'E2',    x:1139, y:696,  r:24, dom:'energy',   lbl:'LNG Supply\nShock',
+    desc:'Ras Laffan disruption and Hormuz closure cut off ~20% of global LNG trade. QatarEnergy halted production. Gas prices spike, hitting power sectors hardest.' },
+  { id:'E3',    x:1074, y:774,  r:22, dom:'energy',   lbl:'Hydrocarbon\nProduction Cuts',
+    desc:'Storage fills rapidly when Hormuz closes. Producers forced to cut output even if infrastructure is undamaged — a self-reinforcing supply shock.' },
+  { id:'E4',    x:1479, y:659,  r:22, dom:'energy',   lbl:'Non-Gulf\nProducer Windfall',
+    desc:'Higher global oil and gas prices generate windfall profits for non-Gulf producers: Russia, US shale, North Sea, Canada.' },
+  { id:'E5',    x:1013, y:631,  r:22, dom:'food',     lbl:'Fertiliser\nSupply Shock',
+    desc:'Gulf urea, ammonia, and sulphur exports disrupted. Urea prices up ~30%. Timing devastating: spring planting season is underway globally.' },
+  { id:'E7',    x:556,  y:688,  r:20, dom:'industry', lbl:'Sulphur\nSupply Shock',
+    desc:'Gulf countries supply ~45% of global sulphur. Disruption causes sulfuric acid shortages, raising copper leaching costs and metal processing costs globally.' },
+  { id:'E8',    x:884,  y:619,  r:22, dom:'tech',     lbl:'Helium\nShortage',
+    desc:'Ras Laffan disruption removes ~1/3 of global helium supply — a critical, hard-to-substitute input for semiconductor manufacturing and medical imaging.' },
+  { id:'E9',    x:586,  y:604,  r:20, dom:'industry', lbl:'Aluminium\nSupply Shock',
+    desc:'Gulf aluminium smelters reliant on cheap gas face production halts — difficult and slow to restart.' },
+  { id:'E10',   x:763,  y:553,  r:22, dom:'finance',  lbl:'Global Port\nCongestion',
+    desc:'Hormuz backup creates cascading congestion at ports worldwide. Ships divert and queue far from the Gulf; delays spread to non-Gulf trade routes within weeks.' },
+  { id:'E11',   x:768,  y:787,  r:20, dom:'shock',    lbl:'Red Sea\nEscalation Risk',
+    desc:'Hormuz disruption may reignite Houthi activity in the Red Sea — potentially closing both Bab el-Mandeb AND Hormuz simultaneously.' },
+  { id:'E12',   x:734,  y:668,  r:21, dom:'finance',  lbl:'Gulf\nTransshipment\nDisruption',
+    desc:'Drone strike on Jebel Ali disrupts the Middle East\'s biggest transshipment hub, cascading delays regionally.' },
+  { id:'E14',   x:685,  y:1000, r:20, dom:'aviation', lbl:'Repatriation\nFlights',
+    desc:'Airlines and charter operators scramble to evacuate foreign nationals from the Gulf — revenue-negative empty-leg return flights surge in volume.' },
+  { id:'E15A',  x:561,  y:913,  r:20, dom:'aviation', lbl:'Gulf Aviation\nDisruption',
+    desc:'Gulf carriers (Emirates, Qatar Airways) grounded. Two of the world\'s most profitable airlines lose revenue during peak Ramadan season.' },
+  { id:'E15B',  x:576,  y:815,  r:20, dom:'aviation', lbl:'Flight\nRerouting &\nCancellations',
+    desc:'Global airlines cannot overfly Gulf or Iranian airspace, adding hours to routes and compounding existing Russia overfly bans.' },
+  { id:'EREF',  x:1251, y:930,  r:20, dom:'energy',   lbl:'Gulf Refining\nCapacity\nCut Off',
+    desc:'Drone strike forces Ruwais refinery shutdown, cutting UAE refined product export capacity and regional fuel supply.' },
+  { id:'LOGI',  x:606,  y:486,  r:21, dom:'finance',  lbl:'Logistics\nCost Surge',
+    desc:'Energy cost spike, port congestion, and insurance repricing combine into a broad logistics cost surge, hitting all traded goods.' },
+  { id:'IEA_R', x:1328, y:856,  r:20, dom:'macro',    lbl:'Strategic\nReserves Release',
+    desc:'IEA coordinates release of 400 million barrels of strategic reserves — the largest in history. Moderates but cannot replace sustained Hormuz flow.' },
+  { id:'SHADOW',x:1157, y:864,  r:20, dom:'energy',   lbl:'Iran\nShadow Fleet',
+    desc:'Iran\'s shadow tanker fleet continues to transit Hormuz, ferrying crude to China — partially offsetting the global supply shock.' },
+  { id:'BYPASS',x:1487, y:922,  r:20, dom:'energy',   lbl:'Gulf\nPipelines',
+    desc:'Saudi Petroline (7m bpd; Yanbu cap ~4.5m bpd) and UAE Abu Dhabi–Fujairah pipeline partially bypass Hormuz.' },
+  { id:'MILEX', x:1118, y:1010, r:21, dom:'defence',  lbl:'Military\nExpenditure\nSurge',
+    desc:'War forces emergency defence spending increases across affected countries — a direct fiscal burden on top of already stretched budgets.' },
+  { id:'EXPAT', x:695,  y:1125, r:20, dom:'gulf',     lbl:'Foreigners\nLeave the Gulf',
+    desc:'Instability prompts mass departure of expatriate professionals. 237 centimillionaires accelerate moves. Dubai cannot function without its foreign workforce.' },
+  { id:'GOLD',  x:850,  y:957,  r:20, dom:'finance',  lbl:'Dubai Gold\nHub Disruption',
+    desc:'Dubai handles 15% of world gold trade. Disruption hits global physical gold markets, particularly in South Asia.' },
+  { id:'I1',    x:1313, y:691,  r:23, dom:'energy',   lbl:'Energy\nPrice Surge',
+    desc:'Oil and gas price spikes pass through to electricity generation costs, raising energy prices across all sectors of the global economy.' },
+  { id:'I2',    x:383,  y:487,  r:21, dom:'industry', lbl:'Metallurgy\nCost Surge',
+    desc:'Higher energy prices and supply disruptions raise costs for aluminium smelting, steel production, and chemicals globally.' },
+  { id:'I3',    x:1037, y:537,  r:21, dom:'industry', lbl:'Plastics &\nPetrochem.\nCost Surge',
+    desc:'Higher oil, gas, and naphtha prices raise petrochemical feedstock costs, feeding through into plastics and packaging prices globally.' },
+  { id:'I4',    x:1472, y:530,  r:21, dom:'energy',   lbl:'Demand Surge:\nEnergy\nSubstitutes',
+    desc:'Energy price shock accelerates consumer and business demand for renewables, EVs, and heat pumps — a rare positive secondary effect.' },
+  { id:'A1J',   x:1473, y:805,  r:20, dom:'aviation', lbl:'Jet Fuel\nCost Surge',
+    desc:'Oil price spike sharply raises jet fuel costs — airlines\' largest variable expense — compressing margins globally.' },
+  { id:'A1P',   x:344,  y:891,  r:21, dom:'aviation', lbl:'Aviation\nIndustry Profits\nHit',
+    desc:'Gulf aviation disruption, repatriation costs, and fuel surge hit aviation sector profits. Gulf/European non-Gulf carriers face acute revenue shock.' },
+  { id:'A3',    x:400,  y:648,  r:20, dom:'aviation', lbl:'Air Freight\nCost Surge',
+    desc:'Grounded belly-cargo capacity on passenger jets, combined with higher fuel costs, drives up global air freight rates sharply.' },
+  { id:'A4',    x:469,  y:1071, r:21, dom:'aviation', lbl:'Tourism\nSlump',
+    desc:'Airspace closures, viral images of Gulf strikes, and consumer confidence shock suppress international travel globally.' },
+  { id:'F4',    x:1273, y:557,  r:22, dom:'food',     lbl:'Food\nPrice Surge',
+    desc:'Energy and fertiliser cost surges, combined with supply chain disruption, drive food prices higher across global markets.' },
+  { id:'F5',    x:1457, y:364,  r:21, dom:'food',     lbl:'Food Insecurity\n(esp. Global\nSouth)',
+    desc:'Food price inflation causes acute food insecurity in South Asia, sub-Saharan Africa, and MENA — regions with the least fiscal capacity to absorb the shock.' },
+  { id:'T1',    x:882,  y:485,  r:21, dom:'tech',     lbl:'Semiconductor\nDisruption',
+    desc:'Helium shortage disrupts semiconductor manufacturing in Taiwan, South Korea, and the Netherlands — already a concentrated supply chain.' },
+  { id:'T2',    x:880,  y:374,  r:21, dom:'tech',     lbl:'Consumer &\nDefence Hardware\nDelays',
+    desc:'Semiconductor crunch causes downstream production delays across consumer electronics, EVs, and military hardware.' },
+  { id:'T3',    x:1063, y:448,  r:20, dom:'tech',     lbl:'AI\nCost Surge',
+    desc:'Higher energy prices constrain AI data centre investment and raise the marginal cost of AI inference — a major headwind for 2026 tech growth.' },
+  { id:'D1',    x:1198, y:1092, r:21, dom:'defence',  lbl:'Defence Industry\nDemand Surge',
+    desc:'War drives sharply higher demand for military hardware, ammunition, missiles, and drones globally.' },
+  { id:'D2',    x:1258, y:331,  r:21, dom:'defence',  lbl:'Defence Supply\nChain\nDisruptions',
+    desc:'Supply chain constraints, energy price rises, and logistics disruption compound existing defence industrial bottlenecks.' },
+  { id:'M1',    x:891,  y:239,  r:25, dom:'macro',    lbl:'Consumer Price\nInflation Surge',
+    desc:'Energy, food, shipping, and logistics price surges combine into a broad-based global consumer price inflation spike.' },
+  { id:'M2',    x:1150, y:216,  r:25, dom:'macro',    lbl:'Interest\nRate Hikes',
+    desc:'Central banks forced to tighten monetary policy to fight inflation, raising borrowing costs globally and choking investment.' },
+  { id:'M3',    x:1149, y:104,  r:20, dom:'macro',    lbl:'Asset/AI\nBubble Risk',
+    desc:'Rising interest rates increase discount rates applied to tech and AI growth stocks, raising the risk of a correction in overvalued asset classes.' },
+  { id:'M4',    x:1404, y:232,  r:21, dom:'macro',    lbl:'Global South\nDebt Crisis',
+    desc:'Dollar appreciation plus higher US rates raise the real burden of dollar-denominated debt across the Global South. Sovereign default risk rises sharply.' },
+  { id:'M5',    x:227,  y:324,  r:22, dom:'macro',    lbl:'Economic Growth\nSlowdown',
+    desc:'Investment falls on higher rates; consumption is suppressed by higher prices; trade volumes contract. GDP declines across major economies.' },
+  { id:'M6A',   x:184,  y:239,  r:20, dom:'macro',    lbl:'Rising\nUnemployment',
+    desc:'Economic slowdown reduces labour demand across sectors — with particular exposure in energy-intensive industries, logistics, and trade.' },
+  { id:'M6B',   x:230,  y:145,  r:20, dom:'macro',    lbl:'Rising\nInequality',
+    desc:'Energy and food inflation hits low-income households hardest, widening income and wealth gaps within countries.' },
+  { id:'M7',    x:475,  y:184,  r:22, dom:'macro',    lbl:'Stagflation',
+    desc:'Simultaneous inflation and growth slowdown creates stagflation — the hardest scenario for central banks to manage.' },
+  { id:'M9',    x:888,  y:1115, r:21, dom:'macro',    lbl:'Dollar\nStrengthens',
+    desc:'Safe-haven demand drives dollar appreciation, making dollar-denominated debt more expensive for all emerging market borrowers.' },
+  { id:'M11',   x:822,  y:155,  r:22, dom:'macro',    lbl:'US Fiscal\nPosition\nDeteriorates',
+    desc:'Military expenditure surge plus higher debt servicing costs from rate hikes worsen the already large US fiscal deficit. Bond market stress rises.' },
+  { id:'M12',   x:836,  y:75,   r:20, dom:'macro',    lbl:'US Bond\nYield Hikes',
+    desc:'Deteriorating US fiscal position raises bond market concerns, pushing up long-term US Treasury yields.' },
+  { id:'M13A',  x:1038, y:1083, r:21, dom:'macro',    lbl:'Gold\nSurge',
+    desc:'Investors flee to gold as the classic safe-haven asset. Prices surge sharply on geopolitical uncertainty.' },
+  { id:'M13B',  x:1050, y:1175, r:21, dom:'macro',    lbl:'Stock Market\nSlump',
+    desc:'Rate hikes and recession fears weigh on equities broadly. Exception: hydrocarbon and defence stocks outperform.' },
+  { id:'C1',    x:541,  y:259,  r:21, dom:'macro',    lbl:'Consumption\nSlump',
+    desc:'Consumer confidence collapses under inflation, uncertainty, and falling real incomes — sharply reducing household spending.' },
+  { id:'INV',   x:314,  y:1174, r:20, dom:'macro',    lbl:'Investment\nSlowdown',
+    desc:'Uncertainty and higher borrowing costs trigger a broad investment slowdown across private and public sectors.' },
+  { id:'REC',   x:452,  y:99,   r:21, dom:'macro',    lbl:'Global\nRecession Risk',
+    desc:'Sustained stagflation and demand collapse risk tipping major economies into recession — the most severe potential macro outcome.' },
+  { id:'REM',   x:1582, y:272,  r:21, dom:'regional', lbl:'Gulf Remittances\nto Global South\nSlump',
+    desc:'Dubai is systemically important for remittances from Gulf migrant workers to South Asia and Africa. Disruption hits underbanked economies across two continents.' },
+];
+
+// ── EDGES
+let EDGES = [
+  {s:'ROOT',  t:'S1',    type:'neg'},
+  {s:'ROOT',  t:'S2',    type:'neg'},
+  {s:'ROOT',  t:'S3',    type:'neg'},
+  {s:'ROOT',  t:'S4',    type:'neg'},
+  {s:'ROOT',  t:'E11',   type:'pot'},
+  {s:'ROOT',  t:'MILEX', type:'neg'},
+  {s:'S1',    t:'E2',    type:'neg'},
+  {s:'S1',    t:'E3',    type:'neg'},
+  {s:'S1',    t:'E5',    type:'neg'},
+  {s:'S1',    t:'E7',    type:'neg'},
+  {s:'S1',    t:'E8',    type:'neg'},
+  {s:'S1',    t:'E9',    type:'neg'},
+  {s:'S1',    t:'E10',   type:'neg'},
+  {s:'S1',    t:'E12',   type:'neg'},
+  {s:'S1',    t:'EREF',  type:'neg'},
+  {s:'S2',    t:'E14',   type:'neg'},
+  {s:'S2',    t:'E15A',  type:'neg'},
+  {s:'S2',    t:'E15B',  type:'neg'},
+  {s:'S2',    t:'GOLD',  type:'neg'},
+  {s:'S3',    t:'E3',    type:'neg'},
+  {s:'S3',    t:'BYPASS',type:'pot'},
+  {s:'S4',    t:'A4',    type:'neg'},
+  {s:'S4',    t:'C1',    type:'neg'},
+  {s:'S4',    t:'E14',   type:'neg'},
+  {s:'S4',    t:'EXPAT', type:'neg'},
+  {s:'S4',    t:'INV',   type:'neg'},
+  {s:'S4',    t:'M9',    type:'neg'},
+  {s:'S4',    t:'M13A',  type:'pos'},
+  {s:'S4',    t:'M13B',  type:'neg'},
+  {s:'S4',    t:'REM',   type:'neg'},
+  {s:'E1',    t:'I1',    type:'neg'},
+  {s:'E2',    t:'E5',    type:'neg'},
+  {s:'E2',    t:'I1',    type:'neg'},
+  {s:'E2',    t:'I3',    type:'neg'},
+  {s:'E3',    t:'E1',    type:'neg'},
+  {s:'E3',    t:'E2',    type:'neg'},
+  {s:'E3',    t:'E8',    type:'neg'},
+  {s:'E5',    t:'F4',    type:'neg'},
+  {s:'E7',    t:'I2',    type:'neg'},
+  {s:'E8',    t:'T1',    type:'neg'},
+  {s:'E9',    t:'I2',    type:'neg'},
+  {s:'E10',   t:'LOGI',  type:'neg'},
+  {s:'E11',   t:'E10',   type:'pot'},
+  {s:'E12',   t:'E10',   type:'neg'},
+  {s:'E14',   t:'A1P',   type:'neg'},
+  {s:'E15A',  t:'A1P',   type:'neg'},
+  {s:'E15A',  t:'A4',    type:'neg'},
+  {s:'E15B',  t:'A1P',   type:'neg'},
+  {s:'EREF',  t:'E1',    type:'neg'},
+  {s:'EREF',  t:'A1J',   type:'neg'},
+  {s:'LOGI',  t:'D2',    type:'neg'},
+  {s:'LOGI',  t:'M1',    type:'neg'},
+  {s:'IEA_R', t:'E1',    type:'pos'},
+  {s:'SHADOW',t:'E1',    type:'pos'},
+  {s:'BYPASS',t:'E1',    type:'pos'},
+  {s:'MILEX', t:'D1',    type:'pos'},
+  {s:'EXPAT', t:'E14',   type:'neg'},
+  {s:'EXPAT', t:'REM',   type:'neg'},
+  {s:'GOLD',  t:'M13A',  type:'pos'},
+  {s:'I1',    t:'A1J',   type:'neg'},
+  {s:'I1',    t:'D2',    type:'neg'},
+  {s:'I1',    t:'E4',    type:'pos'},
+  {s:'I1',    t:'F4',    type:'neg'},
+  {s:'I1',    t:'I2',    type:'neg'},
+  {s:'I1',    t:'I3',    type:'neg'},
+  {s:'I1',    t:'I4',    type:'pos'},
+  {s:'I1',    t:'LOGI',  type:'neg'},
+  {s:'I1',    t:'M1',    type:'neg'},
+  {s:'I1',    t:'T3',    type:'neg'},
+  {s:'I2',    t:'D2',    type:'neg'},
+  {s:'I2',    t:'M1',    type:'neg'},
+  {s:'I3',    t:'F4',    type:'neg'},
+  {s:'A1J',   t:'A1P',   type:'neg'},
+  {s:'A1P',   t:'A3',    type:'neg'},
+  {s:'A1P',   t:'A4',    type:'neg'},
+  {s:'A3',    t:'LOGI',  type:'neg'},
+  {s:'F4',    t:'F5',    type:'neg'},
+  {s:'F4',    t:'M1',    type:'neg'},
+  {s:'T1',    t:'T2',    type:'neg'},
+  {s:'T1',    t:'T3',    type:'neg'},
+  {s:'T2',    t:'D2',    type:'neg'},
+  {s:'T2',    t:'M1',    type:'neg'},
+  {s:'T3',    t:'D2',    type:'neg'},
+  {s:'D2',    t:'D1',    type:'neg'},
+  {s:'M1',    t:'C1',    type:'neg'},
+  {s:'M1',    t:'M2',    type:'neg'},
+  {s:'M1',    t:'M7',    type:'neg'},
+  {s:'M2',    t:'I4',    type:'neg'},
+  {s:'M2',    t:'M3',    type:'neg'},
+  {s:'M2',    t:'M4',    type:'neg'},
+  {s:'M2',    t:'M11',   type:'neg'},
+  {s:'M2',    t:'M13B',  type:'neg'},
+  {s:'M5',    t:'M6A',   type:'neg'},
+  {s:'M5',    t:'M7',    type:'neg'},
+  {s:'M6A',   t:'M6B',   type:'neg'},
+  {s:'M7',    t:'M6B',   type:'neg'},
+  {s:'M7',    t:'M11',   type:'neg'},
+  {s:'M7',    t:'REC',   type:'pot'},
+  {s:'M9',    t:'M4',    type:'neg'},
+  {s:'M11',   t:'M12',   type:'neg'},
+  {s:'C1',    t:'M5',    type:'neg'},
+  {s:'INV',   t:'M5',    type:'neg'},
+];
+
+// ================================================================
+// RENDERING ENGINE
+// ================================================================
+const DCOL = {
+  conflict:'#dc2626', shock:'#f97316',  energy:'#f59e0b',
+  food:'#84cc16',     tech:'#a855f7',   finance:'#06b6d4',
+  macro:'#3b82f6',    aviation:'#14b8a6',industry:'#eab308',
+  gulf:'#7dd3fc',     defence:'#f43f5e', regional:'#94a3b8',
+};
+
+const svgEl = document.getElementById('graph');
+const svg   = d3.select('#graph');
+const defs  = svg.append('defs');
+
+// Background gradient
+const bgG = defs.append('radialGradient').attr('id','bgG').attr('cx','50%').attr('cy','50%').attr('r','70%');
+bgG.append('stop').attr('offset','0%').attr('stop-color','#0d1840');
+bgG.append('stop').attr('offset','100%').attr('stop-color','#05091a');
+svg.append('rect').attr('width','100%').attr('height','100%').attr('fill','url(#bgG)');
+
+// Arrow markers — one per colour
+function makeMarker(id, color) {
+  defs.append('marker').attr('id',id)
+    .attr('viewBox','0 -4 9 8').attr('refX',7).attr('refY',0)
+    .attr('markerWidth',5.5).attr('markerHeight',5.5).attr('orient','auto')
+    .append('path').attr('d','M0,-4L9,0L0,4').attr('fill',color);
+}
+makeMarker('arr-neg','#ef4444');
+makeMarker('arr-pos','#22c55e');
+makeMarker('arr-pot','rgba(239,68,68,0.55)');
+
+// Glow filter
+const flt = defs.append('filter').attr('id','glow').attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');
+flt.append('feGaussianBlur').attr('stdDeviation','6').attr('result','b');
+const fm = flt.append('feMerge');
+fm.append('feMergeNode').attr('in','b');
+fm.append('feMergeNode').attr('in','SourceGraphic');
+
+const mainG  = svg.append('g').attr('class','root');
+const edgeG  = mainG.append('g').attr('id','edgeG');
+const nodeG  = mainG.append('g').attr('id','nodeG');
+
+let nodeMap = {};
+
+function buildNodeMap() {
+  nodeMap = {};
+  NODES_DEF.forEach(n => { nodeMap[n.id] = n; });
+}
+
+// ── Edge path: clip to node perimeters + collision avoidance ──
+function computePath(s, t) {
+  const dx = t.x - s.x, dy = t.y - s.y;
+  const len = Math.hypot(dx, dy);
+  if (len < 2) return null;
+  const ux = dx/len, uy = dy/len;
+
+  // Clip start/end to node circumferences
+  const x1 = s.x + s.r * ux,     y1 = s.y + s.r * uy;
+  const x2 = t.x - (t.r+4) * ux, y2 = t.y - (t.r+4) * uy;
+
+  // Check for intermediate nodes blocking the straight path
+  let worstOverlap = 0, worstNode = null, worstTP = 0.5;
+  for (const n of NODES_DEF) {
+    if (n.id === s.id || n.id === t.id) continue;
+    const ex = x2-x1, ey = y2-y1, elen2 = ex*ex + ey*ey;
+    if (elen2 < 1) continue;
+    const tp = Math.max(0.05, Math.min(0.95, ((n.x-x1)*ex + (n.y-y1)*ey) / elen2));
+    const cx = x1 + tp*ex, cy = y1 + tp*ey;
+    const dist = Math.hypot(n.x - cx, n.y - cy);
+    const clearance = n.r + 7;
+    if (dist < clearance) {
+      const ov = clearance - dist;
+      if (ov > worstOverlap) { worstOverlap = ov; worstNode = n; worstTP = tp; }
+    }
+  }
+
+  if (!worstNode) {
+    // No collision — straight line
+    return `M${x1.toFixed(1)},${y1.toFixed(1)} L${x2.toFixed(1)},${y2.toFixed(1)}`;
+  }
+
+  // Route around blocking node using a quadratic bezier.
+  // Compute control point so the bezier midpoint (t=0.5) clears the blocking node.
+  // Bezier midpoint = 0.25*P0 + 0.5*CP + 0.25*P2 → CP = 2*mid - 0.5*(P0+P2)
+  const perpX = -uy, perpY = ux;
+  const bx = worstNode.x - (x1 + worstTP*(x2-x1));
+  const by = worstNode.y - (y1 + worstTP*(y2-y1));
+  const sign = (perpX*bx + perpY*by) >= 0 ? -1 : 1;
+  const push  = worstOverlap + worstNode.r + 14;
+  const midX  = (x1+x2)/2 + sign * perpX * push;
+  const midY  = (y1+y2)/2 + sign * perpY * push;
+  const cpX   = 2*midX - 0.5*(x1+x2);
+  const cpY   = 2*midY - 0.5*(y1+y2);
+
+  return `M${x1.toFixed(1)},${y1.toFixed(1)} Q${cpX.toFixed(1)},${cpY.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+}
+
+function drawEdges() {
+  edgeG.selectAll('*').remove();
+  EDGES.forEach((e, ei) => {
+    const s = nodeMap[e.s], t = nodeMap[e.t];
+    if (!s || !t) return;
+    const d = computePath(s, t);
+    if (!d) return;
+
+    const isPot = e.type === 'pot';
+    const isPos = e.type === 'pos';
+    const col   = isPos ? '#22c55e' : '#ef4444';
+    const op    = isPot ? 0.38 : (isPos ? 0.60 : 0.42);
+    const sw    = isPos ? 1.2 : 1.3;
+
+    edgeG.append('path')
+      .attr('class','edge-path')
+      .attr('data-ei', ei)
+      .attr('d', d)
+      .attr('fill','none')
+      .attr('stroke', col)
+      .attr('stroke-width', sw)
+      .attr('stroke-opacity', op)
+      .attr('stroke-dasharray', isPot ? '6 4' : 'none')
+      .attr('marker-end', `url(#arr-${isPot ? 'pot' : (isPos ? 'pos' : 'neg')})`)
+      .on('mouseenter', function() { d3.select(this).attr('stroke-opacity', Math.min(1, op*2.2)).attr('stroke-width', sw+0.7); })
+      .on('mouseleave', function() { d3.select(this).attr('stroke-opacity', op).attr('stroke-width', sw); });
+  });
+}
+
+function drawNodes() {
+  nodeG.selectAll('*').remove();
+  defs.selectAll('[id^="ng"]').remove();
+
+  NODES_DEF.forEach(n => {
+    const col = DCOL[n.dom] || '#7ea8e0';
+    const hex = col.replace('#','');
+    const r2 = parseInt(hex.substring(0,2),16);
+    const g2 = parseInt(hex.substring(2,4),16);
+    const b2 = parseInt(hex.substring(4,6),16);
+
+    const gid = 'ng'+n.id;
+    const gr = defs.append('radialGradient').attr('id',gid).attr('cx','38%').attr('cy','32%').attr('r','68%');
+    gr.append('stop').attr('offset','0%').attr('stop-color',`rgba(${r2},${g2},${b2},0.38)`);
+    gr.append('stop').attr('offset','100%').attr('stop-color',`rgba(${r2},${g2},${b2},0.08)`);
+
+    const ng = nodeG.append('g')
+      .attr('class','node-g')
+      .attr('data-id', n.id)
+      .attr('transform',`translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
+
+    // Soft aura
+    ng.append('circle').attr('r', n.r+12).attr('fill',`rgba(${r2},${g2},${b2},0.04)`);
+
+    // Main circle
+    ng.append('circle')
+      .attr('class','nc')
+      .attr('r', n.r)
+      .attr('fill',`url(#${gid})`)
+      .attr('stroke', col)
+      .attr('stroke-width', n.id==='ROOT' ? 2.5 : 1.4);
+
+    // Extra rings for root node
+    if (n.id === 'ROOT') {
+      [16, 30].forEach((off, i) => {
+        ng.append('circle').attr('r', n.r+off).attr('fill','none')
+          .attr('stroke',col).attr('stroke-width',0.7).attr('stroke-opacity',0.14-i*0.04);
+      });
+    }
+
+    // Label
+    const lines = n.lbl.split('\n');
+    const lh = 11, th = (lines.length-1) * lh;
+    lines.forEach((line, i) => {
+      ng.append('text')
+        .attr('x',0).attr('y', -th/2 + i*lh + (lines.length > 1 ? 1 : 4))
+        .attr('text-anchor','middle').attr('dominant-baseline','middle')
+        .attr('fill','#fff')
+        .attr('font-size', n.id==='ROOT' ? '13px' : (n.r >= 24 ? '9px' : '8px'))
+        .attr('font-weight', n.id==='ROOT' ? '700' : '400')
+        .attr('font-family', n.id==='ROOT' ? 'Playfair Display,serif' : 'DM Sans,sans-serif')
+        .attr('pointer-events','none')
+        .text(line);
+    });
+
+    // Interaction layer
+    ng.append('circle').attr('r', n.r+11).attr('fill','transparent')
+      .on('mouseenter', ev => { showTip(ev, n); highlightNode(n.id, true); })
+      .on('mousemove',  ev => { moveTip(ev); })
+      .on('mouseleave', ()  => { hideTip(); highlightNode(n.id, false); });
+  });
+}
+
+// Highlight connected edges/nodes on hover
+function highlightNode(id, on) {
+  edgeG.selectAll('.edge-path').each(function(d, i) {
+    const e = EDGES[+d3.select(this).attr('data-ei')];
+    if (!e) return;
+    const connected = (e.s === id || e.t === id);
+    if (on && connected) {
+      d3.select(this).attr('stroke-opacity', 0.9).attr('stroke-width', 2);
+    } else if (on) {
+      d3.select(this).attr('stroke-opacity', 0.08);
+    } else {
+      const isPot = e.type==='pot', isPos = e.type==='pos';
+      d3.select(this)
+        .attr('stroke-opacity', isPot ? 0.38 : (isPos ? 0.60 : 0.42))
+        .attr('stroke-width', isPos ? 1.2 : 1.3);
+    }
+  });
+}
+
+function redraw() {
+  buildNodeMap();
+  drawEdges();
+  drawNodes();
+}
+
+redraw();
+
+// ── Zoom / Pan ──────────────────────────────────────────────────
+const zoom = d3.zoom().scaleExtent([0.18, 5])
+  .on('zoom', ev => {
+    mainG.attr('transform', ev.transform);
+  });
+svg.call(zoom);
+
+function fitView() {
+  const w = svgEl.clientWidth || 1200, h = svgEl.clientHeight || 700, pad = 60;
+  const xs = NODES_DEF.flatMap(n => [n.x - n.r, n.x + n.r]);
+  const ys = NODES_DEF.flatMap(n => [n.y - n.r, n.y + n.r]);
+  const x0 = Math.min(...xs)-pad, x1 = Math.max(...xs)+pad;
+  const y0 = Math.min(...ys)-pad, y1 = Math.max(...ys)+pad;
+  const sc = Math.min(w/(x1-x0), h/(y1-y0)) * 0.97;
+  svg.transition().duration(450)
+    .call(zoom.transform, d3.zoomIdentity
+      .translate(w/2 - (x0+(x1-x0)/2)*sc, h/2 - (y0+(y1-y0)/2)*sc)
+      .scale(sc));
+}
+document.getElementById('zi').onclick = () => svg.transition().call(zoom.scaleBy, 1.3);
+document.getElementById('zo').onclick = () => svg.transition().call(zoom.scaleBy, 0.77);
+document.getElementById('zr').onclick = fitView;
+setTimeout(fitView, 80);
+window.addEventListener('resize', fitView);
+
+// ── Tooltip ─────────────────────────────────────────────────────
+const ttEl = document.getElementById('tt');
+function showTip(ev, n) {
+  ttEl.innerHTML = `<div class="ti">${n.id}</div><div class="tl">${n.lbl.replace(/\n/g,' ')}</div><div class="td">${n.desc}</div>`;
+  ttEl.classList.add('show'); moveTip(ev);
+}
+function moveTip(ev) {
+  const tw = 265, pad = 16;
+  let lx = ev.clientX + pad;
+  if (lx + tw > window.innerWidth - 8) lx = ev.clientX - tw - pad;
+  ttEl.style.left = lx + 'px'; ttEl.style.top = (ev.clientY - 14) + 'px';
+}
+function hideTip() { ttEl.classList.remove('show'); }
+</script>
+</body>
+</html>

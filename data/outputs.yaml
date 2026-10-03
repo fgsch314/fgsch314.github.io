@@ -1,0 +1,892 @@
+# Single source of truth for every output on the website (D-002).
+# One entry per item. Fields: date (YYYY-MM[-DD] or YYYY), type (policy|media|academic),
+# format, title, outlet, url, [url_ar], [lang], [coauthors], topics [list], [featured: true].
+# Migrated from WordPress 2026-10-03 by 03-code/migrate_wp.py; edit by hand from now on.
+
+- date: 2026-10
+  type: media
+  format: Quoted
+  title: Trump vs Europe as US presses for release of emergency diesel stocks
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/10/2/trump-vs-europe-as-us-presses-for-release-of-emergency-diesel-stocks
+  topics:
+  - iran-war
+- date: 2026-10
+  type: policy
+  format: Commentary
+  title: Keeping Eyes on Oil or on the Future
+  outlet: ITT Nexus
+  url: https://ittnexus.com/keeping-eyes-on-oil-or-1
+  topics:
+  - iran-war
+- date: 2026-09
+  type: policy
+  format: Monthly report
+  title: GCC 360, September Issue
+  outlet: Moharram & Partners
+  url: /static/files/gcc360-2026-09.pdf
+  topics:
+  - iran-war
+- date: 2026-09
+  type: media
+  format: TV interview
+  title: 'Beyond Borders: Trump Rejects Iran’s Hormuz Plan'
+  outlet: Pakistan TV
+  url: https://www.youtube.com/watch?v=5eFVhj5EWko
+  topics:
+  - iran-war
+- date: 2026-09
+  type: media
+  format: Quoted
+  title: UAE positioned to profit from fragmentation of global trade
+  outlet: The Banker
+  url: https://www.thebanker.com/content/167599b2-d952-4d8f-8338-e8f7b9eb0de6
+  topics:
+  - iran-war
+- date: 2026-09
+  type: media
+  format: TV interview
+  title: 'Perspective: U.S.–Iran War: Global Economy Faces New Shock'
+  outlet: Pakistan TV
+  url: https://www.youtube.com/watch?v=o03tcj1AXaY
+  topics:
+  - iran-war
+- date: 2026-09
+  type: media
+  format: Quoted
+  title: Why has the Netherlands moved $10bn of its gold from the US?
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/9/3/why-has-the-netherlands-moved-10bn-of-its-gold-from-the-us
+  topics:
+  - iran-war
+- date: 2026-09
+  type: media
+  format: Quoted
+  title: The US is gobbling up Venezuelan oil, but will it lower fuel prices?
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/9/2/the-us-is-gobbling-up-venezuelan-oil-but-will-it-lower-fuel-prices
+  topics:
+  - iran-war
+- date: 2026-08
+  type: policy
+  format: Commentary
+  title: Why Has the Price of Oil Remained Below War-Time Expectations?
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/why-has-the-price-of-oil-remained-below-war-time-expectations/
+  topics:
+  - iran-war
+  featured: true
+- date: 2026-08
+  type: policy
+  format: Monthly report
+  title: GCC 360, August Issue
+  outlet: Moharram & Partners
+  url: /static/files/gcc360-2026-08.pdf
+  topics:
+  - iran-war
+- date: 2026-08
+  type: policy
+  format: Commentary
+  title: With Hormuz Blocked Again, How Effective Are the Gulf’s Bypass Routes?
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/with-hormuz-blocked-again-how-effective-are-the-gulfs-bypass-routes/
+  topics:
+  - iran-war
+  featured: true
+- date: 2026-08
+  type: media
+  format: TV interview
+  title: 'Perspective: US-Iran War, Hormuz Crisis, Sanctions, What Comes Next?'
+  outlet: Pakistan TV
+  url: https://www.youtube.com/watch?v=2k_gZ5wEQXc
+  topics:
+  - iran-war
+- date: 2026-08
+  type: media
+  format: Quoted
+  title: 'Trump’s ‘economic D-Day’ claims first victim: Not Iran, but US markets'
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/8/21/trumps-economic-d-day-claims-first-victim-not-iran-but-us-markets
+  topics:
+  - iran-war
+- date: 2026-08
+  type: media
+  format: TV interview
+  title: War on Iran and the world economy
+  outlet: Al Jazeera TV
+  url: null
+  topics:
+  - iran-war
+- date: 2026-08
+  type: media
+  format: TV interview
+  title: 'Perspective: The World''s Oil Choke-Point'
+  outlet: Pakistan TV
+  url: https://www.youtube.com/watch?v=vDDHqKdehlQ
+  topics:
+  - iran-war
+- date: 2026-07
+  type: policy
+  format: Monthly report
+  title: GCC 360, July Issue
+  outlet: Moharram & Partners
+  url: /static/files/gcc360-2026-07.pdf
+  topics:
+  - iran-war
+- date: 2026-07
+  type: media
+  format: Webinar
+  title: Yemen and the Battle for the Red Sea
+  outlet: Middle East Council
+  url: https://www.youtube.com/watch?v=gTDE82MgeGI
+  topics:
+  - iran-war
+- date: 2026-07
+  type: media
+  format: TV interview
+  title: Oil and geopolitics
+  outlet: Bloomberg TV
+  url: null
+  topics:
+  - iran-war
+- date: 2026-06
+  type: policy
+  format: Commentary
+  title: It’s Time for a Climate OPEC
+  outlet: Gulf International Forum
+  url: https://gulfif.org/its-time-for-a-climate-opec/
+  topics:
+  - iran-war
+- date: 2026-06
+  type: policy
+  format: Monthly report
+  title: GCC 360, June Issue
+  outlet: Moharram & Partners
+  url: /static/files/gcc360-2026-06.pdf
+  topics:
+  - iran-war
+- date: 2026-06
+  type: policy
+  format: Webinar
+  title: 'After the War: Reorienting Gulf Economic Policy'
+  outlet: Middle East Council on Global Affairs
+  url: https://youtu.be/WaxjuTAzhrc?si=7e2slJKpZrKXF2Vd&t=2012
+  topics:
+  - iran-war
+- date: 2026-06
+  type: media
+  format: Quoted
+  title: Will a US-Iran deal unlock $300bn in investment fund for Tehran?
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/6/16/will-a-us-iran-deal-unlock-300bn-in-investment-fund-for-tehran
+  topics:
+  - iran-war
+- date: 2026-06
+  type: media
+  format: Quoted
+  title: ما الذي نعرفه عن أموال إيران المجمدة؟
+  outlet: BBC Arabic
+  url: https://www.bbc.com/arabic/articles/cx2kee2kn87o
+  lang: Arabic
+  topics:
+  - iran-war
+- date: 2026-06
+  type: media
+  format: Quoted
+  title: Did Iran make out better from the war?
+  outlet: CNN
+  url: https://edition.cnn.com/2026/06/17/business/iran-war-financial-benefit
+  topics:
+  - iran-war
+- date: 2026-06
+  type: media
+  format: Quoted
+  title: 'Oman’s wartime paradox: Diplomatic losses, economic gains'
+  outlet: Al-Monitor
+  url: https://www.al-monitor.com/originals/2026/06/omans-wartime-paradox-diplomatic-losses-economic-gains
+  topics:
+  - iran-war
+- date: 2026-05
+  type: policy
+  format: Commentary
+  title: The Costs of the Iran War Ceasefire for the Gulf States
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/the-costs-of-the-iran-war-ceasefire-for-the-gulf-states/
+  topics:
+  - iran-war
+- date: 2026-05
+  type: policy
+  format: Commentary
+  title: 'Saudi Arabia at a Crossroads: Economic Fragility Before and After the War'
+  outlet: Carpo
+  url: https://carpo-bonn.org/en/publications/carpo-pulse/saudi-arabia-at-a-crossroads-economic-fragility-before-and-after-the-war
+  topics:
+  - iran-war
+- date: 2026-05
+  type: policy
+  format: Situation assessment
+  title: Qatar’s Strategic Balancing Amid Escalation and Disruption
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/publication/qatars-strategic-balancing-amid-escalation-and-disruption/
+  topics:
+  - iran-war
+- date: 2026-05
+  type: policy
+  format: Commentary
+  title: The UAE’s OPEC Exit Leaves the Gulf Further Adrift
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/the-uaes-opec-exit-leaves-the-gulf-further-adrift/
+  topics:
+  - iran-war
+- date: 2026-05
+  type: policy
+  format: Commentary
+  title: 'Economic Crisis, Human Cost: The Consequences of the War on Iran for the People of the Gulf'
+  outlet: DAWN
+  url: https://dawnmena.org/economic-crisis-human-cost-the-consequences-of-the-war-on-iran-for-the-people-of-the-gulf/
+  topics:
+  - iran-war
+- date: 2026-05
+  type: media
+  format: Quoted
+  title: The Iran War Is Crippling One of the World’s Wealthiest Nations
+  outlet: New York Times
+  url: https://www.nytimes.com/2026/05/17/business/qatar-economy-iran-war.html
+  topics:
+  - iran-war
+- date: 2026-05
+  type: media
+  format: Quoted
+  title: Gulf nations hoped to move beyond oil. The Iran war made that much harder
+  outlet: Washington Post
+  url: https://www.washingtonpost.com/business/2026/05/10/iran-war-oil-gulf-economies/
+  topics:
+  - iran-war
+- date: 2026-05
+  type: media
+  format: Quoted
+  title: 'Vecchi oleodotti, ferrovie e canali futuristici: il Golfo cerca nuove rotte per bypassare Hormuz'
+  outlet: La Repubblica
+  url: https://www.repubblica.it/esteri/2026/05/05/news/paesi_golfo_rotte_alternative_stretto_hormuz_blocco-425324224/
+  lang: Italian
+  topics:
+  - iran-war
+  title_en: 'Old pipelines, railways, and futuristic canals: the Gulf searches new routes to bypass Hormuz'
+- date: 2026-05
+  type: media
+  format: Quoted
+  title: UAE supply chain plan to protect against external shocks in 'uncertain world'
+  outlet: The National
+  url: https://www.thenationalnews.com/news/uae/2026/05/02/uae-supply-chain-plan-to-protect-against-external-shocks-in-uncertain-world/
+  topics:
+  - iran-war
+- date: 2026-05
+  type: media
+  format: Quoted
+  title: Gulf countries' plans to bypass Hormuz still far off, experts warn
+  outlet: AFP (via France24)
+  url: https://www.france24.com/en/live-news/20260501-gulf-countries-plans-to-bypass-hormuz-still-far-off-experts-warn
+  topics:
+  - iran-war
+- date: 2026-05
+  type: media
+  format: Quoted
+  title: UAE’s OPEC exit signals strategic shift as Gulf unity faces new test over oil policy
+  outlet: Euronews
+  url: https://www.euronews.com/business/2026/05/01/uaes-opec-exit-signals-strategic-shift-as-gulf-unity-faces-new-test-over-oil-policy
+  topics:
+  - iran-war
+- date: 2026-04
+  type: policy
+  format: Commentary
+  title: 'Gulf Data Centers: The Ambitions and Reality of “Petro-Compute”'
+  outlet: Gulf International Forum
+  url: https://gulfif.org/gulf-data-centers-the-ambitions-and-reality-of-petro-compute/
+  topics: []
+- date: 2026-04
+  type: policy
+  format: Commentary
+  title: The War on Iran and the Complex Economics of Fertilisers and Food
+  outlet: Noria Research
+  url: https://noria-research.com/mena/the-war-on-iran-and-the-complex-economics-of-fertilisers-and-food/
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: Podcast
+  title: OPEC vor der Zerreissprobe?
+  outlet: The Pioneer, Morning Briefing
+  url: https://www.thepioneer.de/originals/thepioneer-briefing-business-class-edition/podcasts/klingbeils-haushalt-oder-opec-vor-zerreissprobe-oder-zuversicht-aus-dem-automaten
+  lang: German
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: Quoted
+  title: How long can Iran survive the US’s Hormuz blockade?
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/4/24/how-long-can-iran-survive-the-uss-hormuz-blockade
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: Quoted
+  title: How Iran war has triggered soaring cost of medicines
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/4/23/how-iran-war-has-triggered-soaring-cost-of-medicines-condoms
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: TV interview
+  title: Economic consequences of Hormuz closure
+  outlet: BBC News
+  url: https://www.bbc.co.uk/programmes/m002vhxg
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: TV interview
+  title: The geopolitical and geoeconomic prospects of the planned peace talks
+  outlet: Pakistan TV, Experts Corner
+  url: https://youtu.be/89-QHa8YU3E
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: TV interview
+  title: Commentary on the declared reopening of the Strait of Hormuz
+  outlet: for CGTN America
+  url: https://www.youtube.com/watch?v=f4jslFiFJlw
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: Quoted
+  title: What are Iran’s $100bn in frozen assets and where are they held?
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/4/15/what-are-irans-100bn-in-frozen-assets-and-where-are-they-held
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: TV panel
+  title: Who controls the Strait of Hormuz?
+  outlet: Al Jazeera English, Counting the Cost
+  url: https://www.youtube.com/watch?v=Zo3Ihu79D3k
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: Quoted
+  title: How much will US Hormuz blockade hurt Iran, and does Tehran have an escape?
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/4/14/how-much-will-us-hormuz-blockade-hurt-iran-and-does-tehran-have-an-escape
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: Webinar
+  title: The Conflict’s Impact on Food and Water Security Explained
+  outlet: UN Water Conference Academic Hub & Observer Research Foundation Middle East
+  url: https://www.youtube.com/watch?v=UWezbbEuSH4
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: TV panel
+  title: 'War, Oil & Inflation: Is the global economy heading for stagflation?'
+  outlet: CGTN, The Agenda
+  url: https://newseu.cgtn.com/news/2026-04-04/War-Oil-Inflation-Is-the-global-economy-heading-for-stagflation--1M2ZuV7JPDq/p.html
+  topics:
+  - iran-war
+- date: 2026-04
+  type: media
+  format: Q&A
+  title: War-induced fertiliser shock for MENA
+  outlet: ByTheEast
+  url: https://www.bytheeast.com/2026/04/02/dr-frederic-schneider-the-most-exposed-countries-are-lebanon-yemen-sudan-gaza-and-the-west-bank/
+  topics:
+  - iran-war
+- date: 2026-03
+  type: policy
+  format: Commentary
+  title: 'Gulf AI Infrastructure: Examining the Business and Economic Case'
+  outlet: Gulf International Forum
+  url: https://gulfif.org/gulf-ai-infrastructure-examining-the-business-and-economic-case/
+  topics: []
+- date: 2026-03
+  type: policy
+  format: Commentary
+  title: The Costs of the Iran Conflict for the Gulf
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/the-costs-of-the-iran-conflict-for-the-gulf/
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: TV interview
+  title: Iran war consequences on global supply chains
+  outlet: Bulgarian National Television
+  url: https://bnt.bg/news/za-ikonomicheskite-posledici-ot-konflikta-v-blizkiya-iztok-komentar-na-frederik-shnaider-v411734-347485news.html
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: Quoted
+  title: Iran war to dent Gulf state investment
+  outlet: DW
+  url: https://www.dw.com/en/no-more-big-spenders-iran-war-to-dent-gulf-state-investment/a-76400242
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: Quoted
+  title: Iran Conflict’s Impact on Global Economy Could Be Underestimated by Markets
+  outlet: El Balad
+  url: https://www.el-balad.com/16883203
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: Quoted
+  title: Global Economy at Tipping Point as Iran War Oil Surge Sparks Financial Crisis Fears
+  outlet: International Business Times
+  url: https://www.ibtimes.co.uk/global-economy-tipping-point-iran-war-oil-surge-sparks-financial-crisis-fears-1786488
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: Quoted
+  title: Prolonged Iran Conflict Starting to Raise Specter of Stagflation
+  outlet: Investing.com
+  url: https://www.investing.com/analysis/prolonged-iran-conflict-starting-to-raise-specter-of-stagflation-200676775
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: Quoted
+  title: Strait of Hormuz blockage drives up Gulf food bills
+  outlet: AFP (via RFI)
+  url: https://www.rfi.fr/en/international-news/20260319-strait-of-hormuz-blockage-drives-up-gulf-food-bills
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: Quoted
+  title: How badly has the Iran war hit the global economy? The tell-tale signs
+  outlet: Al Jazeera
+  url: https://www.aljazeera.com/news/2026/3/16/the-tell-tale-signs-how-bad-has-the-iran-war-hit-the-global-economy
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: Quoted
+  title: Markets may be underestimating how the Iran war could hit the global economy
+  outlet: Euronews
+  url: https://www.euronews.com/2026/03/16/markets-may-be-underestimating-how-the-iran-war-could-hit-the-global-economy
+  topics:
+  - iran-war
+- date: 2026-03
+  type: media
+  format: TV interview
+  title: Economic fallout of the war on Iran
+  outlet: for Al Jazeera English
+  url: /static/files/aje-interview-2026-03.mp4
+  topics:
+  - iran-war
+- date: 2026-02
+  type: policy
+  format: Commentary
+  title: Green Hydrogen Prospects in the Gulf
+  outlet: Observer Research Foundation
+  url: https://orfme.org/expert-speak/green-hydrogen-prospects-in-the-gulf/
+  topics: []
+- date: 2026-01
+  type: policy
+  format: Policy paper
+  title: 'The GCC’s Evolving Trade Networks: Navigating Fragmentation and Diversification'
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/publication/the-gccs-evolving-trade-networks-navigating-fragmentation-and-diversification/
+  url_ar: https://mecouncil.org/ar/publication/%d8%b4%d8%a8%d9%83%d8%a7%d8%aa-%d8%a7%d9%84%d8%aa%d8%ac%d8%a7%d8%b1%d8%a9-%d8%a7%d9%84%d8%ae%d9%84%d9%8a%d8%ac%d9%8a%d8%a9-%d8%a7%d9%84%d9%85%d8%aa%d8%ac%d8%af%d9%91%d8%af%d8%a9-%d8%a8%d9%8a%d9%86/
+  topics: []
+  featured: true
+- date: '2026'
+  type: academic
+  format: Conference paper
+  title: Ministry of McKinsey or Gulf MITI? Pathways to independence from external advice and regional economic cooperation
+  outlet: Gulf Research Meeting 2026 (available on request)
+  url: null
+  topics: []
+- date: '2026'
+  type: academic
+  format: Working paper
+  title: Delegation to Humans and Algorithms in Financial Decision Making
+  outlet: Working paper, submitted to Experimental Economics
+  url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6080548
+  topics: []
+  coauthors: Benjamin Hiepler, Jan Schmitz, Stefan Zeisberger
+- date: 2025-12
+  type: media
+  format: Quoted
+  title: Gulf finance hubs race to expand as hedge funds flock to Dubai, Abu Dhabi
+  outlet: Al-Monitor
+  url: https://www.al-monitor.com/originals/2025/12/gulf-finance-hubs-race-expand-hedge-funds-flock-dubai-abu-dhabi
+  topics: []
+- date: 2025-09
+  type: policy
+  format: Policy paper
+  title: 'Gulf SMEs and the Post-Oil Economy: Lessons from the Mittelstand Model'
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/publication/gulf-smes-and-the-post-oil-economy-lessons-from-the-mittelstand-model/
+  url_ar: https://mecouncil.org/ar/publication/%d8%a7%d9%84%d8%b4%d8%b1%d9%83%d8%a7%d8%aa-%d8%a7%d9%84%d8%b5%d8%ba%d9%8a%d8%b1%d8%a9-%d9%88%d8%a7%d9%84%d9%85%d8%aa%d9%88%d8%b3%d9%91%d8%b7%d8%a9-%d8%a7%d9%84%d8%ad%d8%ac%d9%85-%d9%81%d9%8a-%d8%a7/
+  topics: []
+- date: 2025-09
+  type: media
+  format: Quoted
+  title: Would minimum wage help UAE’s lowest-paid workers – or just stoke inflation?
+  outlet: The National
+  url: https://www.thenationalnews.com/news/uae/2025/09/06/would-minimum-wage-help-uaes-lowest-paid-workers-or-just-stoke-inflation/
+  topics: []
+- date: 2025-09
+  type: media
+  format: Quoted
+  title: Growing Gulf states culture clash pits migrants vs. locals
+  outlet: DW
+  url: https://www.dw.com/en/uae-saudi-arabia-gulf-states-competition-between-citizens-and-migrants-for-private-sector-jobs/a-73892349
+  topics: []
+- date: 2025-09
+  type: media
+  format: Radio interview
+  title: Dubai Hits 4 Million Residents | Economist on Growth & Challenges
+  outlet: for Mira Business FM
+  url: https://www.youtube.com/watch?v=8oCbuW6OCIc
+  topics: []
+- date: 2025-08
+  type: media
+  format: Radio interview
+  title: Dubai hits 4m – what does it mean for residents?
+  outlet: Dubai Eye 103.8, The Agenda
+  url: https://omny.fm/shows/the-agenda-with-georgia-tolley/dubai-hits-4m-what-does-it-mean-for-residents?t=4m37s
+  topics: []
+- date: 2025-08
+  type: media
+  format: Quoted
+  title: Dubai’s population hits four million – here’s what lies ahead for the city that keeps on growing
+  outlet: The National
+  url: https://www.thenationalnews.com/news/uae/2025/08/28/as-dubais-population-reaches-four-million-what-lies-ahead-for-a-city-that-keeps-on-growing/
+  topics: []
+- date: 2025-08
+  type: media
+  format: Quoted
+  title: إيران وباكستان.. طموحات اقتصادية تصطدم بتحديات جيوسياسية
+  outlet: Asharq News
+  url: https://asharq.co/z4bvh
+  lang: Arabic
+  topics: []
+  title_en: 'Iran and Pakistan: Economic ambitions collide with geopolitical challenges'
+- date: 2025-07
+  type: policy
+  format: Policy note
+  title: 'After the Shock: The Israel-Iran War’s Economic Impact on the Gulf'
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/publication/after-the-shock-the-israel-iran-wars-economic-impact-on-the-gulf/
+  url_ar: https://mecouncil.org/ar/publication/%d8%a2%d8%ab%d8%a7%d8%b1-%d9%85%d8%a7-%d8%a8%d8%b9%d8%af-%d8%a7%d9%84%d8%b5%d8%af%d9%85%d8%a9-%d8%a7%d9%84%d8%ad%d8%b1%d8%a8-%d8%a7%d9%84%d8%a5%d8%b3%d8%b1%d8%a7%d8%a6%d9%8a%d9%84%d9%8a%d9%91%d8%a9/
+  topics:
+  - iran-war
+- date: 2025-07
+  type: media
+  format: Podcast
+  title: Economic Fallout of the Israel-Iran War on the Gulf
+  outlet: MEnbar Podcast
+  url: https://www.youtube.com/watch?v=U7qwhn4UbXk&t=12s
+  topics:
+  - iran-war
+- date: 2025-05
+  type: policy
+  format: Commentary
+  title: Could Trump's Attack on Academia Be a Boon for the Gulf?
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/could-trumps-attack-on-academia-be-a-boon-for-the-gulf/
+  url_ar: https://mecouncil.org/ar/blog_posts/%d9%87%d8%ac%d9%88%d9%85-%d8%aa%d8%b1%d8%a7%d9%85%d8%a8-%d8%b9%d9%84%d9%89-%d8%a7%d9%84%d8%a3%d9%83%d8%a7%d8%af%d9%8a%d9%85%d9%8a%d8%a7-%d9%81%d8%b1%d8%b5%d8%a9-%d8%ab%d9%85%d9%8a%d9%86%d8%a9-%d9%84/
+  topics: []
+- date: 2025-05
+  type: policy
+  format: Commentary
+  title: Trump is back. Should Gulf States accelerate decoupling from the U.S.?
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/trump-is-back-should-gulf-states-accelerate-decoupling-from-the-u-s/
+  topics: []
+- date: 2025-05
+  type: media
+  format: Quoted
+  title: Saudi Arabia to become high-tech manufacturing hub?
+  outlet: DW
+  url: https://www.dw.com/en/laptops-iphones-made-in-saudi-arabia-hype-or-genuine-opportunity/a-72687658
+  topics: []
+- date: 2025-04
+  type: policy
+  format: Commentary
+  title: What to Expect from Trump’s Visit to the Gulf
+  outlet: Middle East Council on Global Affairs
+  url: https://mecouncil.org/blog_posts/trumps-middle-east-policy-revisited/#FredericSchneider
+  url_ar: https://mecouncil.org/ar/blog_posts/100-%D9%8A%D9%88%D9%85-%D9%81%D9%8A-%D8%A7%D9%84%D8%B1%D8%A6%D8%A7%D8%B3%D8%A9-%D8%B3%D9%8A%D8%A7%D8%B3%D8%A9-%D8%AA%D8%B1%D8%A7%D9%85%D8%A8-%D8%AA%D8%AC%D8%A7%D9%87-%D8%A7%D9%84%D8%B4%D8%B1%D9%82/#%D9%81%D8%B1%D9%8A%D8%AF%D8%B1%D9%8A%D9%83%20%D8%B4%D9%86%D8%A7%D9%8A%D8%AF%D8%B1
+  topics: []
+- date: 2025-04
+  type: policy
+  format: Commentary
+  title: Hooked on Fossil Fuels? Analyzing the Gulf States’ Dependency on Hydrocarbons
+  outlet: Gulf International Forum
+  url: https://gulfif.org/hooked-on-fossil-fuels-analyzing-the-gulf-states-dependency-on-hydrocarbons/
+  topics: []
+- date: 2025-04
+  type: media
+  format: Quoted
+  title: How do you rank countries? It’s about more than just wealth, says founder of new index
+  outlet: The National
+  url: https://www.thenationalnews.com/news/uae/2025/04/01/how-do-you-rank-countries-its-about-more-than-just-wealth-says-founder-of-new-index/
+  topics: []
+- date: 2025-03
+  type: policy
+  format: Commentary
+  title: The Significance of Hydrocarbons to Gulf States and Their Citizens
+  outlet: Gulf International Forum
+  url: https://gulfif.org/the-significance-of-hydrocarbons-to-gulf-states-and-their-citizens/
+  topics: []
+- date: 2025-03
+  type: policy
+  format: Commentary
+  title: What the Data Tells Us about Hydrocarbon-Producing States
+  outlet: Gulf International Forum
+  url: https://gulfif.org/what-the-data-tells-us-about-hydrocarbon-producing-states/
+  topics: []
+- date: '2025'
+  type: academic
+  format: Conference paper
+  title: 'The SEZification of the Gulf: Special Economic Zones and Regulatory Convergence in the GCC'
+  outlet: Conference paper (available on request)
+  url: null
+  topics: []
+- date: '2025'
+  type: academic
+  format: Journal article
+  title: Mental Capabilities, Heterogeneous Trading Behaviour and Performance in an Experimental Asset Market
+  outlet: 'The Economic Journal, 2025, 135 (671): 2161–2191'
+  url: https://doi.org/10.1093/ej/ueaf003
+  coauthors: A. Hefti and S. Heinke
+  topics: []
+- date: 2024-10
+  type: policy
+  format: Commentary
+  title: Future of business and industry in Qatar
+  outlet: The Peninsula
+  url: https://thepeninsulaqatar.com/opinion/13/10/2024/future-of-business-and-industry-in-qatar
+  topics: []
+- date: 2024-06
+  type: policy
+  format: Commentary
+  title: 'Start-Ups and SMEs: Key Lessons for the GCC from Global Models'
+  outlet: Gulf International Forum
+  url: https://gulfif.org/start-ups-and-smes-key-lessons-for-the-gcc-from-global-models/
+  topics: []
+- date: 2024-05
+  type: policy
+  format: Commentary
+  title: The Obstacles to Unleashing the Gulf’s Entrepreneurial Potential
+  outlet: Gulf International Forum
+  url: https://gulfif.org/obstacles-to-unleashing-the-gulfs-entrepreneurial-potential/
+  topics: []
+- date: 2024-03
+  type: media
+  format: Quoted
+  title: Ramadan's economic impact is not what matters, say Gulf experts
+  outlet: The National
+  url: https://www.thenationalnews.com/uae/2024/03/26/ramadans-economic-impact-is-not-what-matters-say-gulf-experts/
+  topics: []
+- date: 2024-01
+  type: media
+  format: Quoted
+  title: Plan to boost Emirati families key as expat population surges
+  outlet: The National
+  url: https://www.thenationalnews.com/uae/2024/01/06/plans-to-double-number-of-emirati-families-will-promote-social-cohesion-experts-say/
+  topics: []
+- date: 2023-07
+  type: media
+  format: Quoted
+  title: The mystery of the Ain Dubai, the world’s largest (broken) Ferris wheel
+  outlet: Washington Post
+  url: https://www.washingtonpost.com/world/2023/07/09/ain-dubai-wheel-real-estate/
+  topics: []
+- date: 2023-06
+  type: policy
+  format: Commentary
+  title: Dubai’s Economy Needs More Than Luxury Real Estate Deals
+  outlet: Arab Gulf States Institute in Washington
+  url: https://agsiw.org/dubais-economy-needs-more-than-luxury-real-estate-deals/
+  topics: []
+- date: 2023-06
+  type: media
+  format: Quoted
+  title: What does Dubai's Palm Jebel Ali revival mean for the growth of the UAE?
+  outlet: The National
+  url: https://www.thenationalnews.com/uae/2023/06/10/what-does-the-palm-jebel-ali-revival-mean-for-the-growth-of-the-uae/
+  topics: []
+- date: 2022-11
+  type: media
+  format: Radio interview
+  title: World Population Growth
+  outlet: Dubai Eye 103.8, The Agenda
+  url: https://omny.fm/shows/the-agenda-with-georgia-tolley/world-population-growth?t=2m7s
+  topics: []
+- date: 2022-09
+  type: policy
+  format: Commentary
+  title: 'COP28: Diplomatic opportunities and challenges for the UAE'
+  outlet: Anwar Gargash Diplomatic Academy
+  url: https://www.agda.ac.ae/docs/default-source/default-document-library/diplomatic-opportunities-and-challenges-for-the-uae-en359d0539ddfe6fca8ebaff00006646c8.pdf
+  url_ar: https://www.agda.ac.ae/docs/default-source/default-document-library/diplomatic-opportunities-and-challenges-for-the-uae-araea60539ddfe6fca8ebaff00006646c8.pdf
+  topics: []
+- date: 2022-06
+  type: media
+  format: Radio interview
+  title: Brain Drain in the Middle East
+  outlet: Dubai Eye 103.8, Eye on Education
+  url: https://omny.fm/shows/eye-on-education/eye-on-education-to-stay-or-not-to-stay-are-you-ta?t=35m39s
+  topics: []
+- date: 2022-06
+  type: media
+  format: Quoted
+  title: Higher education investment needed to halt Middle East’s student ‘brain drain’
+  outlet: The National
+  url: https://www.thenationalnews.com/mena/2022/06/08/higher-education-investment-needed-to-halt-middle-easts-student-brain-drain/
+  topics: []
+- date: 2022-01
+  type: media
+  format: Quoted
+  title: Dubai population to surge to nearly 6m in 20 years amid urban transformation
+  outlet: The National
+  url: https://www.thenationalnews.com/uae/2022/01/23/dubai-population-to-surge-to-nearly-6m-in-20-years-amid-urban-transformation/
+  topics: []
+- date: '2022'
+  type: academic
+  format: Journal article
+  title: Trust and Promises over Time
+  outlet: 'American Economic Journal: Microeconomics, 2022, 14 (3): 304-320'
+  url: https://www.aeaweb.org/content/file?id=12246
+  coauthors: F. Ederer
+  topics: []
+- date: 2021-11
+  type: policy
+  format: Commentary
+  title: Towards a Portfolio-Based Gulf Economy?
+  outlet: Arab Gulf States Institute in Washington
+  url: https://agsiw.org/toward-a-portfolio-based-gulf-economy/
+  topics: []
+- date: 2021-10
+  type: media
+  format: Quoted
+  title: Gulf Airlines, The Art of Copy-And-Pilfer
+  outlet: Orient XXI
+  url: https://orientxxi.info/magazine/gulf-airlines-the-art-of-copy-and-pilfer%2C5107
+  topics: []
+- date: 2021-07
+  type: policy
+  format: Commentary
+  title: 'Growth in the Gulf: Four Ways Forward'
+  outlet: Middle East Centre, London School of Economics
+  url: https://blogs.lse.ac.uk/mec/2021/07/22/growth-in-the-gulf-four-ways-forward/
+  topics: []
+- date: 2021-06
+  type: policy
+  format: Commentary
+  title: 'Tubes or Tracks: How (Not) to Revitalise Regional Economic and Political Integration in the Gulf'
+  outlet: Middle East Centre, London School of Economics
+  url: https://blogs.lse.ac.uk/mec/2021/06/08/tubes-or-tracks-how-not-to-revitalise-regional-economic-and-political-integration-in-the-gulf/
+  topics: []
+- date: 2021-05
+  type: policy
+  format: Commentary
+  title: 'Stalling Visions of the Gulf: The UAE’s Vision 2021'
+  outlet: Washington Institute for Near East Policy
+  url: https://www.washingtoninstitute.org/policy-analysis/stalling-visions-gulf-uaes-vision-2021
+  url_ar: https://www.washingtoninstitute.org/ar/policy-analysis/alrwy-alkhlyjyt-almtthrt-rwyt-alamarat-alrbyt-almthdt-2021
+  topics: []
+- date: 2021-05
+  type: policy
+  format: Commentary
+  title: 'Stalling Visions of the Gulf: The Case of Saudi Arabia’s Vision 2030'
+  outlet: Washington Institute for Near East Policy
+  url: https://www.washingtoninstitute.org/policy-analysis/stalling-visions-gulf-case-saudi-arabias-vision-2030
+  url_ar: https://www.washingtoninstitute.org/ar/policy-analysis/rwy-alkhlyj-almtwqft-rwyt-almmlkt-alrbyt-alswdyt-lam-2030
+  topics: []
+- date: 2021-04
+  type: policy
+  format: Commentary
+  title: UAE Schooling Risks Missing the Bus
+  outlet: Middle East Centre, London School of Economics
+  url: https://blogs.lse.ac.uk/mec/2021/04/13/uae-schooling-risks-missing-the-bus/
+  topics: []
+- date: '2021'
+  type: academic
+  format: Journal article
+  title: Frequent Job Changes can Signal Poor Work Attitude and Reduce Employability
+  outlet: 'Journal of the European Economic Association, 2021, 19 (1): 475–508'
+  url: https://doi.org/10.1093/jeea/jvaa017
+  coauthors: A. Cohn, M. Maréchal and R. Weber
+  topics: []
+- date: '2019'
+  type: academic
+  format: Working paper
+  title: Mergers, Mavericks, and Tacit Collusion
+  outlet: Working paper
+  url: https://ideas.repec.org/p/jbs/wpaper/201902.html
+  coauthors: D. Darai and C. Roux
+  topics: []
+- date: '2014'
+  type: academic
+  format: Journal article
+  title: Social Comparison in the Workplace. Evidence from a Field Experiment
+  outlet: 'Journal of the European Economic Association, 2014, 12 (4): 877–898'
+  url: http://onlinelibrary.wiley.com/doi/10.1111/jeea.12079/full
+  coauthors: A. Cohn, E. Fehr, and B. Herrmann
+  topics: []
+- date: '2010'
+  type: academic
+  format: Journal article
+  title: Eyes are on us, but nobody cares. The irrelevance of eye cues for strong reciprocity
+  outlet: Proceedings of the Royal Society B, 2010, 277(1686), 1315-1323
+  url: http://rspb.royalsocietypublishing.org/content/277/1686/1315
+  coauthors: E. Fehr
+  topics: []
+- date: '2009'
+  type: academic
+  format: Journal article
+  title: Disrupting the prefrontal cortex diminishes the human ability to build a good reputation
+  outlet: Proceedings of the National Academy of Sciences, 2009, 106(49), 20895-20899
+  url: http://www.pnas.org/content/106/49/20895
+  coauthors: D. Knoch, D. Schunk, M. Hohmann, and Ernst Fehr
+  topics: []
+- date: null
+  type: academic
+  format: Working paper
+  title: The Unrealized Value of Centralization for Coordination
+  outlet: Work in progress
+  url: null
+  coauthors: E. Ranehill and R. Weber
+  topics: []
+- date: null
+  type: academic
+  format: Working paper
+  title: Long-Term Commitment and Cooperation
+  outlet: UZH Working Paper 130
+  url: https://www.econ.uzh.ch/apps/workingpapers/wp/econwp130.pdf
+  coauthors: R. Weber
+  topics: []
+- date: null
+  type: academic
+  format: Working paper
+  title: Growing Groups, Cooperation, and the Rate of Entry
+  outlet: UZH Working Paper 103
+  url: http://www.econ.uzh.ch/static/workingpapers.php?id=781
+  coauthors: E. Ranehill and R. Weber
+  topics: []
