@@ -1,0 +1,17 @@
+# Cloudflare Worker for the website contact form. Deploy: `npx wrangler deploy` from this folder.
+# Prerequisites (see README.md): domain on Cloudflare DNS; Email Routing enabled on the
+# subdomain forms.fredericgschneider.com (apex MX stays with Proton); destination address verified;
+# Turnstile widget created; secret set with `npx wrangler secret put TURNSTILE_SECRET`.
+name = "contact-form"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[[send_email]]
+name = "MAILER"
+destination_address = "frederic@fredericgschneider.com"
+
+[vars]
+FROM_ADDRESS = "website@forms.fredericgschneider.com"
+TO_ADDRESS = "frederic@fredericgschneider.com"
+ALLOWED_ORIGINS = "https://fredericgschneider.com,https://www.fredericgschneider.com,https://fgsch314.github.io,http://localhost:8740"

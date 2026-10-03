@@ -3,6 +3,7 @@
     python3.11 build.py            # build once
     python3.11 build.py --serve    # build and serve on http://localhost:8740
 """
+import os
 import shutil
 import sys
 from collections import Counter
@@ -35,6 +36,8 @@ def fmt_date(d):
 
 def load():
     site = yaml.safe_load((HERE / "data/site.yaml").read_text())
+    if os.environ.get("FORM_PREVIEW"):  # local layout check only: render the form with a dummy endpoint
+        site["contact_form"] = {"endpoint": "http://localhost:9/none", "turnstile_sitekey": "1x00000000000000000000AA"}
     items = yaml.safe_load((HERE / "data/outputs.yaml").read_text())
     for i in items:
         i["date"] = str(i["date"]) if i.get("date") else ""
